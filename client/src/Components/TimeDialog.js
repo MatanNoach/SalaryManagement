@@ -95,14 +95,14 @@ class TimeDialog extends React.Component {
                             type="text"
                             onChange={this.setStartTime}
                             value={this.state.startTime}
-                            validation="positiveInteger"
+                            validation="time"
                         />
                         <TimeTextField
                             label="End"
                             type="text"
                             onChange={this.setEndTime}
                             value={this.state.endTime}
-                            validation="positiveInteger"
+                            validation="time"
                         />
                         <Button
                             variant="contained"

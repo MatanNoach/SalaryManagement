@@ -5,7 +5,7 @@ const isPositive = (number, type) => {
     if (number <= 0 || isNaN(number)) {
         return { error: "Must enter a positive " + type };
     }
-    return { error: null };
+    return { error: null, num: number };
 };
 
 const positiveIntegerValidation = (value) => {
@@ -39,11 +39,31 @@ const dateValidation = (value) => {
     }
     return { error: null };
 };
+const timeValidation = (value) => {
+    const splitted = value.split(":");
+    const error = { error: "Invalid Time Format" };
+    if (splitted.length !== 2) {
+        return error;
+    }
+    if (splitted[0].length > 2 || splitted[1].length > 2) {
+        return error;
+    }
+    const num1 = positiveIntegerValidation(splitted[0]);
+    const num2 = positiveIntegerWithZeroValidation(splitted[1]);
+    if (num1.error || num2.error) {
+        return error;
+    }
+    if (num1.num > 23 || num2.num > 59) {
+        return error;
+    }
+    return { error: null };
+};
 const validationFunctions = {
     positiveInteger: positiveIntegerValidation,
     positiveFloat: positiveFloatValidation,
     positiveIntegerWithZero: positiveIntegerWithZeroValidation,
     date: dateValidation,
+    time: timeValidation,
 };
 
 class TimeTextField extends React.Component {
