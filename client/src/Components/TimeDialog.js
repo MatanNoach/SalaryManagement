@@ -15,9 +15,9 @@ class TimeDialog extends React.Component {
             startTime: "",
             endTime: "",
             errors: {
-                date:true,
-                startTime:true,
-                endTime:true,
+                date: true,
+                startTime: true,
+                endTime: true,
             },
         };
     }
@@ -49,23 +49,35 @@ class TimeDialog extends React.Component {
         }));
     };
     onClose = () => {
-        this.props.onClose();
+        this.setState(
+            {
+                date: "",
+                startTime: "",
+                endTime: "",
+                errors: {
+                    date: true,
+                    startTime: true,
+                    endTime: true,
+                },
+            },
+            this.props.onClose()
+        );
     };
     onSubmit = () => {
-        var isValid = true
+        var isValid = true;
         if (this.state.errors !== undefined) {
             for (const field in this.state.errors) {
-                if(this.state.errors[field]){
+                if (this.state.errors[field]) {
                     isValid = false;
                 }
             }
         }
-        if(isValid){
-            console.log("Send!")
+        if (isValid) {
+            console.log("Send!");
         }
     };
     render() {
-        console.log(this.state.errors);
+        console.log(this.state);
         return (
             <Dialog
                 open={this.props.open}

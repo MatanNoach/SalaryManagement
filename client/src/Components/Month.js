@@ -1,33 +1,40 @@
 import React from "react";
 import AddButton from "./AddButton";
-import { Dialog, Grid } from "@mui/material";
+import { Container, Grid } from "@mui/material";
 import TimeDialog from "./TimeDialog";
+import TimeTable from "./TimeTable";
 class Month extends React.Component {
-    constructor(props){
+    constructor(props) {
         super(props);
         this.state = {
-            openDialog:false
-        }
+            openDialog: false,
+        };
     }
     addTime = () => {
         this.setState({
-            openDialog:true
-        })
+            openDialog: true,
+        });
     };
-    closeDialog=()=>{
-        console.log("in close (month)")
+    closeDialog = () => {
         this.setState({
-            openDialog:false
-        })
-    }
+            openDialog: false,
+        });
+    };
     render() {
         return (
             <div>
                 <h1>Hello</h1>
-                <Grid container spacing={3} sx={{ position: "sticky", bottom: 10 }} justifyContent="center">
-                    <AddButton onClick={this.addTime} />
-                    <TimeDialog open={this.state.openDialog} onClose={this.closeDialog}/>
-                </Grid>
+                <Container>
+                    <Grid container justifyContent="center">
+                        <Grid item xs={12} sx={{paddingBottom:10}}>
+                            <TimeTable />
+                        </Grid>
+                    </Grid>
+                    <Grid container spacing={3} sx={{ position: "sticky", bottom: 10 }} justifyContent="center">
+                        <AddButton onClick={this.addTime} />
+                    </Grid>
+                </Container>
+                <TimeDialog open={this.state.openDialog} onClose={this.closeDialog} />
             </div>
         );
     }
