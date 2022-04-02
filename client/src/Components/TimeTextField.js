@@ -80,21 +80,17 @@ class TimeTextField extends React.Component {
         if (this.props.validation) {
             const res = validationFunctions[this.props.validation](value);
             if (res.error) {
-                this.setState(
-                    {
-                        isError: true,
-                        error: res.error,
-                    },
-                    () => this.props.onChange(value, true)
-                );
+                this.setState({
+                    isError: true,
+                    error: res.error,
+                });
+                this.props.onChange(value, true);
             } else {
-                this.setState(
-                    {
-                        isError: false,
-                        error: "",
-                    },
-                    () => this.props.onChange(value, false)
-                );
+                this.setState({
+                    isError: false,
+                    error: "",
+                });
+                this.props.onChange(value, false);
             }
         } else {
             this.props.onChange(value, false);
