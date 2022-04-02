@@ -13,7 +13,11 @@ exports.calcDailyPayment = (dataRow) => {
     if (totalH >= overTimeStart) {
         const overTimeH = totalH - overTimeStart;
         const overTimeM = totalM;
-        dataRow["overtime"] = overTimeH + ":" + overTimeM;
+        if (overTimeM === 0 && overTimeH === 0) {
+            dataRow["overtime"] = "-";
+        } else {
+            dataRow["overtime"] = overTimeH + ":" + overTimeM;
+        }
         payment += (overTimeH + overTimeM / 60) * hourlyPayment * overTimePayment;
         totalH -= overTimeH;
         totalM -= overTimeM;

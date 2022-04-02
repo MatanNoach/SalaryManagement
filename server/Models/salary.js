@@ -1,9 +1,10 @@
 module.exports = (mongoose)=>{
     let timeStamp = mongoose.Schema({
-        date:Date,
+        date:String,
         startTime:String,
         endTime:String,
         total:String,
+        overtime:String,
         payment:Number,
     });
     let month = mongoose.Schema({

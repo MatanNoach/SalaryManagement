@@ -2,8 +2,6 @@ import React from "react";
 import { Button, Dialog, DialogContent, DialogTitle, Stack } from "@mui/material";
 import TimeTextField from "./TimeTextField";
 import { Slide } from "@mui/material";
-import "../Utils/TimeSaver";
-import saveTime from "../Utils/TimeSaver";
 import axios from "axios";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
@@ -66,7 +64,7 @@ class TimeDialog extends React.Component {
             this.props.onClose()
         );
     };
-    onSubmit = () => {
+    onSubmit = async  () => {
         var isValid = true;
         if (this.state.errors !== undefined) {
             for (const field in this.state.errors) {
@@ -76,19 +74,21 @@ class TimeDialog extends React.Component {
             }
         }
         if (isValid) {
-            console.log("Send!");
             const row = this.state;
             delete row.errors;
-            try {
-                axios.put("http://localhost:5000/saveTime",{month: this.props.month,year:this.props.year,dataRow:row})
-            } catch (e) {
-                console.log("There was a problem saving the time");
-                console.log(e);
-            }
+            await axios
+                .put("http://localhost:5000/saveTime", { month: this.props.month, year: this.props.year, dataRow: row })
+                .catch((err) => {
+                    console.log("There was a problem saving the time");
+                    console.error(err);
+                }).then(dataRow =>{
+                    console.log(dataRow.data);
+                    this.props.onSubmit(dataRow.data);
+                    this.onClose();
+                });
         }
     };
     render() {
-        console.log(this.state);
         return (
             <Dialog
                 open={this.props.open}
