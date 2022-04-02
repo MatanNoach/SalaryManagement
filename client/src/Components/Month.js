@@ -8,6 +8,8 @@ class Month extends React.Component {
         super(props);
         this.state = {
             openDialog: false,
+            month:"march",
+            year:2022
         };
     }
     addTime = () => {
@@ -34,7 +36,7 @@ class Month extends React.Component {
                         <AddButton onClick={this.addTime} />
                     </Grid>
                 </Container>
-                <TimeDialog open={this.state.openDialog} onClose={this.closeDialog} />
+                <TimeDialog open={this.state.openDialog} onClose={this.closeDialog} month={this.state.month} year={this.state.year} />
             </div>
         );
     }

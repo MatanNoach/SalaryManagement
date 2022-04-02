@@ -2,6 +2,9 @@ import React from "react";
 import { Button, Dialog, DialogContent, DialogTitle, Stack } from "@mui/material";
 import TimeTextField from "./TimeTextField";
 import { Slide } from "@mui/material";
+import "../Utils/TimeSaver";
+import saveTime from "../Utils/TimeSaver";
+import axios from "axios";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -74,6 +77,14 @@ class TimeDialog extends React.Component {
         }
         if (isValid) {
             console.log("Send!");
+            const row = this.state;
+            delete row.errors;
+            try {
+                axios.put("http://localhost:5000/saveTime",{month: this.props.month,year:this.props.year,dataRow:row})
+            } catch (e) {
+                console.log("There was a problem saving the time");
+                console.log(e);
+            }
         }
     };
     render() {
