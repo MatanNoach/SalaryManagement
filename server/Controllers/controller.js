@@ -33,6 +33,11 @@ exports.addMonth = (req, res) => {
 exports.addTime = (req, res) => {
     const year = req.body.year;
     const month = req.body.month;
+    const date = new Date(req.body.dataRow.date);
+    date.setDate(date.getDate() + 7);
+    if (date.getMonth() !== month) {
+        return res.status(500).send("Invalid date in current month salary");
+    }
     req.body.dataRow = calculator.calcDailyPayment(req.body.dataRow);
     Salary.findOneAndUpdate(
         { year: year, month: month },
@@ -42,8 +47,8 @@ exports.addTime = (req, res) => {
             },
             $inc: {
                 salary: req.body.dataRow.payment,
-                totalHours:req.body.dataRow.totalInt,
-            }
+                totalHours: req.body.dataRow.totalInt,
+            },
         }
     )
         .then((data) => {
@@ -59,7 +64,7 @@ exports.addTime = (req, res) => {
 exports.getMonth = (req, res) => {
     const id = req.params.id;
     const year = Number(id.split("-")[1]);
-    const month = id.split("-")[0];
+    const month = Number(id.split("-")[0]);
     Salary.findOne({ year: year, month: month })
         .then((data) => {
             return res.send(data.times);

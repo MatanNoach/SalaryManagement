@@ -9,7 +9,7 @@ module.exports = (mongoose)=>{
         payment:Number,
     });
     let month = mongoose.Schema({
-        month:String,
+        month:Number,
         year:Number,
         salary:Number,
         totalHours:Number,

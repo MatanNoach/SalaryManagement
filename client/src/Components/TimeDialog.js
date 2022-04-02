@@ -64,7 +64,7 @@ class TimeDialog extends React.Component {
             this.props.onClose()
         );
     };
-    onSubmit = async  () => {
+    onSubmit = async () => {
         var isValid = true;
         if (this.state.errors !== undefined) {
             for (const field in this.state.errors) {
@@ -77,14 +77,15 @@ class TimeDialog extends React.Component {
             const row = this.state;
             delete row.errors;
             await axios
-                .put("http://localhost:5000/saveTime", { month: this.props.month, year: this.props.year, dataRow: row })
-                .catch((err) => {
-                    console.log("There was a problem saving the time");
-                    console.error(err);
-                }).then(dataRow =>{
-                    console.log(dataRow.data);
+                .put("http://localhost:5000/addTime", { month: this.props.month, year: this.props.year, dataRow: row })
+                .then((dataRow) => {
                     this.props.onSubmit(dataRow.data);
                     this.onClose();
+                })
+                .catch((err) => {
+                    console.log("There was a problem saving the time");
+                    console.error(err.response.data);
+                    console.error(err)
                 });
         }
     };

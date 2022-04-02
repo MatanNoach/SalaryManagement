@@ -1,6 +1,6 @@
 import React from "react";
 import AddButton from "./AddButton";
-import { Container, Grid } from "@mui/material";
+import { Container, Grid, Typography } from "@mui/material";
 import TimeDialog from "./TimeDialog";
 import TimeTable from "./TimeTable";
 import axios from "axios";
@@ -9,13 +9,13 @@ class Month extends React.Component {
         super(props);
         this.state = {
             openDialog: false,
-            month: "march",
+            month: 2,
             year: 2022,
             data: [],
         };
     }
     componentDidMount = async () => {
-        console.log("getting data")
+        console.log("getting data");
         await axios
             .get("http://localhost:5000/getMonth/" + this.state.month + "-" + this.state.year)
             .then((data) => {
@@ -23,18 +23,18 @@ class Month extends React.Component {
             })
             .catch((err) => {
                 console.log("There was a problem getting the monthly data");
-                console.error(err);
+                console.log(err);
             });
     };
-    addTime = () => {
+    openAddTime = () => {
         this.setState({
             openDialog: true,
         });
     };
     pushTime = (dataRow) => {
-        console.log("pushing time")
+        console.log("pushing time");
         this.setState((prevState) => {
-            return { data: [...prevState.data,dataRow] };
+            return { data: [...prevState.data, dataRow] };
         });
     };
     closeDialog = () => {
@@ -43,19 +43,25 @@ class Month extends React.Component {
         });
     };
     render() {
-        console.log("rendering month")
-        console.log(this.state.data)
         return (
             <div>
                 <h1>This is my Salary Web App</h1>
                 <Container>
-                    <Grid container justifyContent="center">
+                    <Grid container justifyContent="center" textAlign={"center"}>
+                        <Grid item xs={12}>
+                            <Typography variant="h3">
+                                {this.state.month > 8
+                                    ? Number(this.state.month + 1)
+                                    : "0" + Number(this.state.month + 1)}{" "}
+                                - {this.state.year}
+                            </Typography>
+                        </Grid>
                         <Grid item xs={12} sx={{ paddingBottom: 10 }}>
                             <TimeTable month={this.state.month} year={this.state.year} data={this.state.data} />
                         </Grid>
                     </Grid>
                     <Grid container spacing={3} sx={{ position: "sticky", bottom: 10 }} justifyContent="center">
-                        <AddButton onClick={this.addTime} />
+                        <AddButton onClick={this.openAddTime} />
                     </Grid>
                 </Container>
                 <TimeDialog
