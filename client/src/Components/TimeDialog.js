@@ -15,37 +15,49 @@ class TimeDialog extends React.Component {
             date: "",
             startTime: "",
             endTime: "",
-            errors: {
-                date: true,
-                startTime: true,
-                endTime: true,
+            validations: {
+                date: undefined,
+                startTime: undefined,
+                endTime: undefined,
             },
         };
     }
-    setDate = (value, isError) => {
-        this.setState((prevState) => ({
+    setDate = (value) => {
+        this.setState({
             date: value,
-            errors: {
-                ...prevState.errors,
-                date: isError,
-            },
-        }));
+        });
     };
-    setStartTime = (value, isError) => {
-        this.setState((prevState) => ({
+    setStartTime = (value) => {
+        this.setState({
             startTime: value,
-            errors: {
-                ...prevState.errors,
-                startTime: isError,
+        });
+    };
+    setEndTime = (value) => {
+        this.setState({
+            endTime: value,
+        });
+    };
+    setDateValidation = (validationFunc) => {
+        this.setState((prevState) => ({
+            validations: {
+                ...prevState.validations,
+                date: validationFunc,
             },
         }));
     };
-    setEndTime = (value, isError) => {
+    setStartValidation = (validationFunc) => {
         this.setState((prevState) => ({
-            endTime: value,
-            errors: {
-                ...prevState.errors,
-                endTime: isError,
+            validations: {
+                ...prevState.validations,
+                startTime: validationFunc,
+            },
+        }));
+    };
+    setEndValidation = (validationFunc) => {
+        this.setState((prevState) => ({
+            validations: {
+                ...prevState.validations,
+                endTime: validationFunc,
             },
         }));
     };
@@ -55,25 +67,12 @@ class TimeDialog extends React.Component {
                 date: "",
                 startTime: "",
                 endTime: "",
-                errors: {
-                    date: true,
-                    startTime: true,
-                    endTime: true,
-                },
             },
             this.props.onClose()
         );
     };
     onSubmit = async () => {
-        var isValid = true;
-        if (this.state.errors !== undefined) {
-            for (const field in this.state.errors) {
-                if (this.state.errors[field]) {
-                    isValid = false;
-                }
-            }
-        }
-        if (isValid) {
+        if (this.validateFields()) {
             const row = this.state;
             delete row.errors;
             await axios
@@ -85,10 +84,21 @@ class TimeDialog extends React.Component {
                 .catch((err) => {
                     console.log("There was a problem saving the time");
                     console.error(err.response.data);
-                    console.error(err)
+                    console.error(err);
                 });
         }
     };
+    validateFields() {
+        var isValid = true;
+        for (const validation in this.state.validations) {
+            const res = this.state.validations[validation](this.state[validation]);
+            if (res.error) {
+                isValid = false;
+            }
+        }
+        return isValid;
+    }
+
     render() {
         return (
             <Dialog
@@ -101,13 +111,20 @@ class TimeDialog extends React.Component {
                 <DialogTitle>Add Time</DialogTitle>
                 <DialogContent>
                     <Stack direction="row" spacing={2}>
-                        <TimeTextField type="date" onChange={this.setDate} value={this.state.date} validation="date" />
+                        <TimeTextField
+                            type="date"
+                            onChange={this.setDate}
+                            value={this.state.date}
+                            validation="date"
+                            setValidation={this.setDateValidation}
+                        />
                         <TimeTextField
                             label="Start"
                             type="text"
                             onChange={this.setStartTime}
                             value={this.state.startTime}
                             validation="time"
+                            setValidation={this.setStartValidation}
                         />
                         <TimeTextField
                             label="End"
@@ -115,6 +132,7 @@ class TimeDialog extends React.Component {
                             onChange={this.setEndTime}
                             value={this.state.endTime}
                             validation="time"
+                            setValidation={this.setEndValidation}
                         />
                         <Button
                             variant="contained"

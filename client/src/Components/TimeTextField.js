@@ -17,10 +17,6 @@ const positiveIntegerValidation = (value) => {
     return isPositive(number, "Integer");
 };
 
-const positiveFloatValidation = (value) => {
-    const number = Number(value);
-    return isPositive(number, "Decimal");
-};
 
 const positiveIntegerWithZeroValidation = (value) => {
     const number = Number(value);
@@ -34,14 +30,17 @@ const positiveIntegerWithZeroValidation = (value) => {
     return isPositive(number, "Integer");
 };
 const dateValidation = (value) => {
-    if (value === "") {
+    if (value === "" || value === undefined) {
         return { error: "Invalid Date Format" };
     }
     return { error: null };
 };
 const timeValidation = (value) => {
-    const splitted = value.split(":");
     const error = { error: "Invalid Time Format" };
+    if (value === undefined) {
+        return error;
+    }
+    const splitted = value.split(":");
     if (splitted.length !== 2) {
         return error;
     }
@@ -60,7 +59,6 @@ const timeValidation = (value) => {
 };
 const validationFunctions = {
     positiveInteger: positiveIntegerValidation,
-    positiveFloat: positiveFloatValidation,
     positiveIntegerWithZero: positiveIntegerWithZeroValidation,
     date: dateValidation,
     time: timeValidation,
@@ -75,26 +73,39 @@ class TimeTextField extends React.Component {
             value: this.props.value || "",
         };
     }
+    componentDidMount = () => {
+        if (this.props.validation) {
+            this.props.setValidation(this.validate);
+        }
+    };
+    validateGood = ()=>{
+        this.setState({
+            isError: false,
+            error: "",
+        });
+    }
+    validateBad = (res)=>{
+        this.setState({
+            isError: true,
+            error: res.error,
+        });
+    }
+    validate = (value) => {
+        const res = validationFunctions[this.props.validation](value);
+        if (res.error) {
+            this.validateBad(res);
+        } else {
+            this.validateGood();
+        }
+        return res;
+    };
     onChange = (event) => {
         const value = event.target.value;
         if (this.props.validation) {
-            const res = validationFunctions[this.props.validation](value);
-            if (res.error) {
-                this.setState({
-                    isError: true,
-                    error: res.error,
-                });
-                this.props.onChange(value, true);
-            } else {
-                this.setState({
-                    isError: false,
-                    error: "",
-                });
-                this.props.onChange(value, false);
-            }
-        } else {
-            this.props.onChange(value, false);
+            this.validate(value);
         }
+        this.props.onChange(value);
+        
     };
     render() {
         return (
