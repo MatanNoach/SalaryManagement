@@ -24,7 +24,7 @@ class TimeTable extends React.Component {
                                     <TableCell>{day.date}</TableCell>
                                     <TableCell>{day.startTime}</TableCell>
                                     <TableCell>{day.endTime}</TableCell>
-                                    <TableCell>{day.total}</TableCell>
+                                    <TableCell>{day.totalString}</TableCell>
                                     <TableCell>{day.overtime}</TableCell>
                                     <TableCell>{day.payment}</TableCell>
                                 </TableRow>

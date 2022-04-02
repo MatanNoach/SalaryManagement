@@ -3,13 +3,16 @@ module.exports = (mongoose)=>{
         date:String,
         startTime:String,
         endTime:String,
-        total:String,
+        totalInt:Number,
+        totalString:String,
         overtime:String,
         payment:Number,
     });
     let month = mongoose.Schema({
         month:String,
         year:Number,
+        salary:Number,
+        totalHours:Number,
         times:[timeStamp],
     })
     const salaryMonth = mongoose.model("SalaryMonth", month);

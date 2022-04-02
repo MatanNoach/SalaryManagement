@@ -1,5 +1,5 @@
 const overTimeStartMap = { 0: 8, 1: 9, 2: 9, 3: 9, 4: 9, 5: 9, 6: 9 };
-const dailyHours = 100;
+exports.monthlyHours = 100;
 const overTimePayment = 1.25;
 const hourlyPayment = 90;
 
@@ -7,7 +7,7 @@ exports.calcDailyPayment = (dataRow) => {
     const date = new Date(dataRow.date);
     const overTimeStart = overTimeStartMap[date.getDay()];
     const total = totalDailyHours(dataRow);
-    dataRow["total"] = total;
+    dataRow["totalString"] = total;
     var [totalH, totalM] = total.split(":").map((value) => Number(value));
     var payment = 0;
     if (totalH >= overTimeStart) {
@@ -37,5 +37,23 @@ const totalDailyHours = (dataRow) => {
     var hours = Math.floor(diff / 1000 / 60 / 60);
     diff -= hours * 1000 * 60 * 60;
     var minutes = Math.floor(diff / 1000 / 60);
+    dataRow["totalInt"] = Number(hours + minutes / 60);
     return (hours <= 9 ? "0" : "") + hours + ":" + (minutes <= 9 ? "0" : "") + minutes;
+};
+exports.calcTotalHours = (prevTime, addTime) => {
+    const [prevH, prevM] = prevTime.split(":").map((value) => Number(value));
+    const [addH, addM] = addTime.split(":").map((value) => Number(value));
+    var newH = prevH + addH;
+    var newM = addM + prevM;
+    if (newM >= 60) {
+        newH += 1;
+        newM -= 60;
+    }
+    return newH + ":" + newM;
+};
+exports.timeIntToString = (time) => {
+    const hours = Math.floor(time);
+    const left = time - hours;
+    const minutes = Math.round(left * 60);
+    return hours + ":" + minutes;
 };
