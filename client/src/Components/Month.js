@@ -5,6 +5,8 @@ import TimeDialog from "./TimeDialog";
 import TimeTable from "./TimeTable";
 import axios from "axios";
 import EventSnackBar from "./EventSnackBar";
+import CustomPieChart from "./HoursPieChart";
+import SalaryPieChart from "./SalaryPieChart";
 class Month extends React.Component {
     constructor(props) {
         super(props);
@@ -47,7 +49,7 @@ class Month extends React.Component {
         });
     };
     openSnackBar = (message, type) => {
-        console.log("open snack bar")
+        console.log("open snack bar");
         this.setState({
             snackBarOpen: true,
             snackBarMessage: message,
@@ -55,10 +57,10 @@ class Month extends React.Component {
         });
     };
     closeSnackBar = () => {
-        console.log("close snack bar")
+        console.log("close snack bar");
         this.setState({
             snackBarOpen: false,
-            snackBarMessage: ""
+            snackBarMessage: "",
         });
     };
     render() {
@@ -77,6 +79,14 @@ class Month extends React.Component {
                         </Grid>
                         <Grid item xs={12} sx={{ paddingBottom: 10 }}>
                             <TimeTable month={this.state.month} year={this.state.year} data={this.state.data} />
+                        </Grid>
+                        <Grid container spacing={2}>
+                            <Grid item xs={6}>
+                                <CustomPieChart />
+                            </Grid>
+                            <Grid item xs={6}>
+                                <SalaryPieChart />
+                            </Grid>
                         </Grid>
                     </Grid>
                     <Grid container spacing={3} sx={{ position: "sticky", bottom: 10 }} justifyContent="center">
