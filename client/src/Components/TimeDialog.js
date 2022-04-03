@@ -78,13 +78,17 @@ class TimeDialog extends React.Component {
             await axios
                 .put("http://localhost:5000/addTime", { month: this.props.month, year: this.props.year, dataRow: row })
                 .then((dataRow) => {
+                    if (this.props.event) {
+                        this.props.event("Time Added", "success");
+                    }
                     this.props.onSubmit(dataRow.data);
                     this.onClose();
                 })
                 .catch((err) => {
-                    console.log("There was a problem saving the time");
-                    console.error(err.response.data);
                     console.error(err);
+                    if (this.props.event) {
+                        this.props.event(err.response.data, "error");
+                    }
                 });
         }
     };

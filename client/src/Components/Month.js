@@ -4,11 +4,15 @@ import { Container, Grid, Typography } from "@mui/material";
 import TimeDialog from "./TimeDialog";
 import TimeTable from "./TimeTable";
 import axios from "axios";
+import EventSnackBar from "./EventSnackBar";
 class Month extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
             openDialog: false,
+            snackBarOpen: false,
+            snackBarMessage: "",
+            severity: "success",
             month: 2,
             year: 2022,
             data: [],
@@ -42,6 +46,21 @@ class Month extends React.Component {
             openDialog: false,
         });
     };
+    openSnackBar = (message, type) => {
+        console.log("open snack bar")
+        this.setState({
+            snackBarOpen: true,
+            snackBarMessage: message,
+            severity: type,
+        });
+    };
+    closeSnackBar = () => {
+        console.log("close snack bar")
+        this.setState({
+            snackBarOpen: false,
+            snackBarMessage: ""
+        });
+    };
     render() {
         return (
             <div>
@@ -70,6 +89,13 @@ class Month extends React.Component {
                     month={this.state.month}
                     year={this.state.year}
                     onSubmit={this.pushTime}
+                    event={this.openSnackBar}
+                />
+                <EventSnackBar
+                    open={this.state.snackBarOpen}
+                    onClose={this.closeSnackBar}
+                    message={this.state.snackBarMessage}
+                    severity={this.state.severity}
                 />
             </div>
         );
