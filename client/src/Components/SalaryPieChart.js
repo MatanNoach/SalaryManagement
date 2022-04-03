@@ -1,3 +1,4 @@
+import axios from "axios";
 import React from "react";
 import { PieChart } from "react-minimal-pie-chart";
 
@@ -40,6 +41,13 @@ class SalaryPieChart extends React.Component {
         super(props);
         this.state = {};
     }
+    // getData = async ()=>{
+    //     await axios.get("http://localhost:5000/getMonthSalary/" + this.props.month + "-" + this.props.year).then(data=>{
+    //         this.setState({data:data})
+    //     }).catch(err=>{
+
+    //     })
+    // }
     render() {
         return (
             <PieChart
