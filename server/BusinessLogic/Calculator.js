@@ -1,7 +1,15 @@
 const overTimeStartMap = { 0: 8, 1: 9, 2: 9, 3: 9, 4: 9, 5: 9, 6: 9 };
-exports.monthlyHours = 100;
+const monthlyHours = 100;
 const overTimePayment = 1.25;
 const hourlyPayment = 90;
+const percentages = {
+    pension: 0.06,
+    socialSecurity: 0.065,
+    health1: 0.031,
+    health2: 0.05,
+    educationFund: 0.025,
+    incomeTax: 0.033, // Check it
+};
 
 exports.calcDailyPayment = (dataRow) => {
     const date = new Date(dataRow.date);
@@ -56,4 +64,31 @@ exports.timeIntToString = (time) => {
     const left = time - hours;
     const minutes = Math.round(left * 60);
     return hours + ":" + minutes;
+};
+exports.calcSalary = (salary) => {
+    const healthStep = 6331;
+    const health1 = Math.min(salary, healthStep); // מדרגה ראשונה עד 6331
+    const health2 = Math.max(salary - healthStep, 0); // מדרגה שנייה מ6331
+    return {
+        total: salary,
+        pension: percentages["pension"] * salary,
+        socialSecurity: percentages["socialSecurity"] * salary,
+        health: percentages["health1"] * health1 + percentages["health2"] * health2,
+        educationFund: percentages["educationFund"] * salary,
+        incomeTax: percentages["incomeTax"] * salary,
+        neto: netoPercentage() * salary,
+    };
+};
+const netoPercentage = () => {
+    let neto = 1;
+    for (const p in percentages) {
+        neto -= percentages[p];
+    }
+    return neto;
+};
+exports.calcLeftHours = (leftBefore, counted) => {
+    return {
+        left: leftBefore - counted,
+        done: monthlyHours - leftBefore + counted,
+    };
 };
