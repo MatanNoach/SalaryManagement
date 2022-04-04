@@ -36,7 +36,9 @@ exports.addTime = (req, res) => {
         return res.status(500).send("Invalid date in current month salary");
     }
     req.body.dataRow = calculator.calcDailyPayment(req.body.dataRow);
+    console.log("before salary calc")
     const salaryProps = calculator.calcSalary(req.body.dataRow.payment);
+    console.log("after salary calc")
     Salary.findOneAndUpdate(
         { year: year, month: month },
         {
@@ -68,7 +70,7 @@ exports.addTime = (req, res) => {
         })
         .catch((err) => {
             console.log(err);
-            return res.status(500).send({ message: err.message || "There was a problem finding the monthly salary" });
+            return res.status(500).send({ message: "There was a problem finding the monthly salary" });
         });
 };
 exports.getMonth = (req, res) => {

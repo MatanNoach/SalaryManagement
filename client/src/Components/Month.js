@@ -29,7 +29,8 @@ class Month extends React.Component {
             })
             .catch((err) => {
                 console.log("There was a problem getting the monthly data");
-                console.log(err);
+                console.error(err);
+                this.openSnackBar(String(err), "error");
             });
     };
     openAddTime = () => {
@@ -38,8 +39,8 @@ class Month extends React.Component {
         });
     };
     dataUpdate = (data) => {
-        console.log("in data update")
-        console.log(data)
+        console.log("in data update");
+        console.log(data);
         this.setState({
             data: data,
         });
@@ -50,6 +51,7 @@ class Month extends React.Component {
         });
     };
     openSnackBar = (message, type) => {
+        console.log("snack bar open");
         this.setState({
             snackBarOpen: true,
             snackBarMessage: message,
@@ -57,13 +59,14 @@ class Month extends React.Component {
         });
     };
     closeSnackBar = () => {
+        console.log("snack bar close");
         this.setState({
             snackBarOpen: false,
             snackBarMessage: "",
         });
     };
     render() {
-        console.log(this.state.data)
+        console.log(this.state.data);
         return (
             <div>
                 <h1>This is my Salary Web App</h1>
@@ -85,7 +88,7 @@ class Month extends React.Component {
                                 <HoursPieChart data={this.state.data.totalHours} />
                             </Grid>
                             <Grid item xs={6}>
-                                <SalaryPieChart data={this.state.data.salary}/>
+                                <SalaryPieChart data={this.state.data.salary} />
                             </Grid>
                         </Grid>
                     </Grid>

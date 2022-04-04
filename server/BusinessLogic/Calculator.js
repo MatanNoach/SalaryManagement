@@ -2,13 +2,48 @@ const overTimeStartMap = { 0: 8, 1: 9, 2: 9, 3: 9, 4: 9, 5: 9, 6: 9 };
 const monthlyHours = 100;
 const overTimePayment = 1.25;
 const hourlyPayment = 90;
-const percentages = {
-    pension: 0.06,
-    socialSecurity: 0.065,
-    health1: 0.031,
-    health2: 0.05,
-    educationFund: 0.025,
-    incomeTax: 0.033, // Check it
+
+const basicCalc = (prop, salary) => {
+    return Number(salaryProps[prop] * salary);
+};
+const healthCalc = (prop,salary) => {
+    const healthStep = 6331;
+    const health1 = Math.min(salary, healthStep); // מדרגה ראשונה עד 6331
+    const health2 = Math.max(salary - healthStep, 0); // מדרגה שנייה מ6331
+    return Number(salaryProps["health1"] * health1 + salaryProps["health2"] * health2);
+};
+const netoCalc = (salaryObj,salary) => {
+    let neto = salary;
+    for (const p in salaryObj) {
+        if(p!=="total"){
+            neto -= salaryObj[p].value;
+        }
+    }
+    return neto;
+};
+
+const salaryProps = {
+    pension: {
+        percentage:0.06,
+        calcFunction:basicCalc,
+    },
+    socialSecurity: {
+        percentage:0.065,
+        calcFunction:basicCalc,
+    },
+    health:{
+        percentage1:0.031,
+        percentage2:0.05,
+        calcFunction:healthCalc,
+    },
+    educationFund:{
+        percentage:0.025,
+        calcFunction:basicCalc,
+    },
+    incomeTax: {
+        percentage:0.033,
+        calcFunction:basicCalc,
+    }, // Check it
 };
 
 exports.calcDailyPayment = (dataRow) => {
@@ -66,26 +101,26 @@ exports.timeIntToString = (time) => {
     return hours + ":" + minutes;
 };
 exports.calcSalary = (salary) => {
-    const healthStep = 6331;
-    const health1 = Math.min(salary, healthStep); // מדרגה ראשונה עד 6331
-    const health2 = Math.max(salary - healthStep, 0); // מדרגה שנייה מ6331
-    return {
-        total: salary,
-        pension: percentages["pension"] * salary,
-        socialSecurity: percentages["socialSecurity"] * salary,
-        health: percentages["health1"] * health1 + percentages["health2"] * health2,
-        educationFund: percentages["educationFund"] * salary,
-        incomeTax: percentages["incomeTax"] * salary,
-        neto: netoPercentage() * salary,
-    };
-};
-const netoPercentage = () => {
-    let neto = 1;
-    for (const p in percentages) {
-        neto -= percentages[p];
+    const salaryObj = {};
+    salaryObj["total"] = salary;
+    for(const p in salaryProps){
+        salaryObj[p] = salaryProps[p].calcFunction(p,salary)
     }
-    return neto;
+    salaryObj["neto"] = netoCalc(salaryObj,salary)
+    console.log("Final salary object")
+    console.log(salaryObj)
+    return salaryObj;
+    // return {
+    //     total: salary,
+    //     pension: salaryProps["pension"] * salary,
+    //     socialSecurity: salaryProps["socialSecurity"] * salary,
+    //     health: salaryProps["health1"] * health1 + salaryProps["health2"] * health2,
+    //     educationFund: salaryProps["educationFund"] * salary,
+    //     incomeTax: salaryProps["incomeTax"] * salary,
+    //     neto: netoCalc() * salary,
+    // };
 };
+
 exports.calcLeftHours = (leftBefore, counted) => {
     return {
         left: leftBefore - counted,
