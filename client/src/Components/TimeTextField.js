@@ -44,7 +44,7 @@ const timeValidation = (value) => {
     if (splitted.length !== 2) {
         return error;
     }
-    if (splitted[0].length > 2 || splitted[1].length > 2) {
+    if (splitted[0].length !== 2 || splitted[1].length !== 2) {
         return error;
     }
     const num1 = positiveIntegerValidation(splitted[0]);

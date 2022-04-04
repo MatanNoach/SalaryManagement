@@ -7,6 +7,8 @@ import axios from "axios";
 import EventSnackBar from "./EventSnackBar";
 import HoursPieChart from "./HoursPieChart";
 import SalaryPieChart from "./SalaryPieChart";
+import LeftButton from "./LeftButton";
+import RightButton from "./RightButton";
 class Month extends React.Component {
     constructor(props) {
         super(props);
@@ -21,10 +23,15 @@ class Month extends React.Component {
         };
     }
     componentDidMount = async () => {
+        this.getMonthData();
+    };
+    getMonthData = async ()=>{
         console.log("getting data");
         await axios
             .get("http://localhost:5000/getMonth/" + this.state.month + "-" + this.state.year)
             .then((data) => {
+                console.log("data got")
+                console.log(data.data)
                 this.setState({ data: data.data });
             })
             .catch((err) => {
@@ -32,7 +39,12 @@ class Month extends React.Component {
                 console.error(err);
                 this.openSnackBar(String(err), "error");
             });
-    };
+    }
+    componentDidUpdate(prevProps,prevState){
+        if(this.state.month!==prevState.month){
+            this.getMonthData();
+        }
+    }
     openAddTime = () => {
         this.setState({
             openDialog: true,
@@ -65,11 +77,44 @@ class Month extends React.Component {
             snackBarMessage: "",
         });
     };
+    moveMonthDown = () => {
+        if (this.state.month === 0) {
+            this.setState((prevState) => {
+                return {
+                    month: 11,
+                    year: prevState.year - 1,
+                };
+            });
+        } else {
+            this.setState((prevState) => {
+                return {
+                    month: prevState.month - 1,
+                };
+            });
+        }
+    };
+    moveMonthUp = () => {
+        if (this.state.month === 11) {
+            this.setState((prevState) => {
+                return {
+                    month: 0,
+                    year: prevState.year + 1,
+                };
+            });
+        } else {
+            this.setState((prevState) => {
+                return {
+                    month: prevState.month + 1,
+                };
+            });
+        }
+    };
     render() {
-        console.log(this.state.data);
         return (
             <div>
                 <h1>This is my Salary Web App</h1>
+                <LeftButton onClick={this.moveMonthDown}/>
+                <RightButton onClick={this.moveMonthUp}/>
                 <Container>
                     <Grid container justifyContent="center" textAlign={"center"}>
                         <Grid item xs={12}>

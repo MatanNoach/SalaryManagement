@@ -110,15 +110,6 @@ exports.calcSalary = (salary) => {
     console.log("Final salary object")
     console.log(salaryObj)
     return salaryObj;
-    // return {
-    //     total: salary,
-    //     pension: salaryProps["pension"] * salary,
-    //     socialSecurity: salaryProps["socialSecurity"] * salary,
-    //     health: salaryProps["health1"] * health1 + salaryProps["health2"] * health2,
-    //     educationFund: salaryProps["educationFund"] * salary,
-    //     incomeTax: salaryProps["incomeTax"] * salary,
-    //     neto: netoCalc() * salary,
-    // };
 };
 
 exports.calcLeftHours = (leftBefore, counted) => {

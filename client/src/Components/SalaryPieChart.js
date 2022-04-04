@@ -32,6 +32,11 @@ const salaryProps = [
         value: 1,
         color: "#3e4c63",
     },
+    // {
+    //     title: "הכל",
+    //     value: 0,
+    //     color: "#0981fb",
+    // },
 ];
 
 class SalaryPieChart extends React.Component {
@@ -49,6 +54,9 @@ class SalaryPieChart extends React.Component {
                     salaryProps[i].value = Math.round(this.props.data[prop]);
                     i++;
                 }
+                // else if(prop==="total"){
+                //     salaryProps[salaryProps.length-1].title = "סך הכל: " + Math.round(this.props.data[prop]);
+                // }
             }
         }
     };
