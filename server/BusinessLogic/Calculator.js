@@ -4,19 +4,19 @@ const overTimePayment = 1.25;
 const hourlyPayment = 90;
 
 const basicCalc = (prop, salary) => {
-    return Number(salaryProps[prop] * salary);
+    return salaryProps[prop].percentage * salary;
 };
 const healthCalc = (prop,salary) => {
     const healthStep = 6331;
     const health1 = Math.min(salary, healthStep); // מדרגה ראשונה עד 6331
     const health2 = Math.max(salary - healthStep, 0); // מדרגה שנייה מ6331
-    return Number(salaryProps["health1"] * health1 + salaryProps["health2"] * health2);
+    return salaryProps["health"].percentage1 * health1 + salaryProps["health"].percentage2 * health2;
 };
 const netoCalc = (salaryObj,salary) => {
     let neto = salary;
     for (const p in salaryObj) {
         if(p!=="total"){
-            neto -= salaryObj[p].value;
+            neto -= salaryObj[p];
         }
     }
     return neto;

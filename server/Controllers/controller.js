@@ -23,7 +23,7 @@ exports.addMonth = (req, res) => {
             return res.send(data);
         })
         .catch((err) => {
-            return res.status(500).send({ message: err.message || "Some error occured creating a monthly salary." });
+            return res.status(500).send({ message: "Some error occured while creating a monthly salary." });
         });
 };
 
@@ -33,7 +33,7 @@ exports.addTime = (req, res) => {
     const date = new Date(req.body.dataRow.date);
     date.setDate(date.getDate() + 7);
     if (date.getMonth() !== month) {
-        return res.status(500).send("Invalid date in current month salary");
+        return res.status(500).send({message:"Invalid date in current month salary"});
     }
     req.body.dataRow = calculator.calcDailyPayment(req.body.dataRow);
     console.log("before salary calc")

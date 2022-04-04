@@ -87,7 +87,11 @@ class TimeDialog extends React.Component {
                 .catch((err) => {
                     console.error(err);
                     if (this.props.event) {
-                        this.props.event(String(err), "error");
+                        if (err.response) {
+                            this.props.event(err.response.data.message, "error");
+                        } else {
+                            this.props.event(String(err), "error");
+                        }
                     }
                 });
         }
