@@ -4,20 +4,28 @@ import { PieChart } from "react-minimal-pie-chart";
 const hoursLeft = [
     {
         title: "Done",
-        value: 30,
+        value:0,
         color: "#13CE66",
     },
     {
         title: "Left",
-        value: 70,
+        value:100,
         color: "#FF4949",
     },
 ];
 
 class HoursPieChart extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
+    componentDidMount(){
+        this.updateValues();
+    }
+    componentDidUpdate(){
+        this.updateValues();
+    }
+    updateValues = ()=>{
+        if(this.props.data){
+            hoursLeft[0].value = this.props.data.done;
+            hoursLeft[1].value = this.props.data.left;
+        }
     }
     render() {
         return (

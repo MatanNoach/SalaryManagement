@@ -5,7 +5,7 @@ import TimeDialog from "./TimeDialog";
 import TimeTable from "./TimeTable";
 import axios from "axios";
 import EventSnackBar from "./EventSnackBar";
-import CustomPieChart from "./HoursPieChart";
+import HoursPieChart from "./HoursPieChart";
 import SalaryPieChart from "./SalaryPieChart";
 class Month extends React.Component {
     constructor(props) {
@@ -17,7 +17,7 @@ class Month extends React.Component {
             severity: "success",
             month: 2,
             year: 2022,
-            data: [],
+            data: {},
         };
     }
     componentDidMount = async () => {
@@ -37,10 +37,11 @@ class Month extends React.Component {
             openDialog: true,
         });
     };
-    pushTime = (dataRow) => {
-        console.log("pushing time");
-        this.setState((prevState) => {
-            return { data: [...prevState.data, dataRow] };
+    dataUpdate = (data) => {
+        console.log("in data update")
+        console.log(data)
+        this.setState({
+            data: data,
         });
     };
     closeDialog = () => {
@@ -49,7 +50,6 @@ class Month extends React.Component {
         });
     };
     openSnackBar = (message, type) => {
-        console.log("open snack bar");
         this.setState({
             snackBarOpen: true,
             snackBarMessage: message,
@@ -57,13 +57,13 @@ class Month extends React.Component {
         });
     };
     closeSnackBar = () => {
-        console.log("close snack bar");
         this.setState({
             snackBarOpen: false,
             snackBarMessage: "",
         });
     };
     render() {
+        console.log(this.state.data)
         return (
             <div>
                 <h1>This is my Salary Web App</h1>
@@ -78,14 +78,14 @@ class Month extends React.Component {
                             </Typography>
                         </Grid>
                         <Grid item xs={12} sx={{ paddingBottom: 10 }}>
-                            <TimeTable month={this.state.month} year={this.state.year} data={this.state.data} />
+                            <TimeTable month={this.state.month} year={this.state.year} data={this.state.data.times} />
                         </Grid>
                         <Grid container spacing={2}>
                             <Grid item xs={6}>
-                                <CustomPieChart />
+                                <HoursPieChart data={this.state.data.totalHours} />
                             </Grid>
                             <Grid item xs={6}>
-                                <SalaryPieChart />
+                                <SalaryPieChart data={this.state.data.salary}/>
                             </Grid>
                         </Grid>
                     </Grid>
@@ -98,7 +98,7 @@ class Month extends React.Component {
                     onClose={this.closeDialog}
                     month={this.state.month}
                     year={this.state.year}
-                    onSubmit={this.pushTime}
+                    onSubmit={this.dataUpdate}
                     event={this.openSnackBar}
                 />
                 <EventSnackBar

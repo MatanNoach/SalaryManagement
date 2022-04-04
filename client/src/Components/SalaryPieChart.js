@@ -1,64 +1,68 @@
-import axios from "axios";
 import React from "react";
 import { PieChart } from "react-minimal-pie-chart";
 
-const hoursLeft = [
+const salaryProps = [
     {
         title: "נטו",
-        value: 100,
+        value: 1,
         color: "#0981fb",
     },
     {
         title: "מס הכנסה",
-        value: 70,
+        value: 1,
         color: "#80bdfa",
     },
     {
         title: "ביטוח בריאות",
-        value: 70,
+        value: 1,
         color: "#3d59a0",
     },
     {
         title: "ביטוח לאומי",
-        value: 70,
+        value: 1,
         color: "#546c86",
     },
     {
         title: "קרן פנסיה",
-        value: 70,
+        value: 1,
         color: "#ad8fc6",
     },
     {
         title: "קרן השתלמות",
-        value: 70,
+        value: 1,
         color: "#3e4c63",
     },
 ];
 
-
 class SalaryPieChart extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {};
+    componentDidMount() {
+        this.updateValues();
     }
-    // getData = async ()=>{
-    //     await axios.get("http://localhost:5000/getMonthSalary/" + this.props.month + "-" + this.props.year).then(data=>{
-    //         this.setState({data:data})
-    //     }).catch(err=>{
-
-    //     })
-    // }
+    componentDidUpdate() {
+        this.updateValues();
+    }
+    updateValues = () => {
+        if (this.props.data) {
+            var i = 0;
+            for (const prop in this.props.data) {
+                if (prop !== "total" && prop !== "_id") {
+                    salaryProps[i].value = Math.round(this.props.data[prop]);
+                    i++;
+                }
+            }
+        }
+    };
     render() {
         return (
             <PieChart
-                data={hoursLeft}
+                data={salaryProps}
                 lineWidth={30}
                 paddingAngle={5}
-                label={({ dataEntry }) => dataEntry.title+": "+dataEntry.value}
-                segmentsShift={(index) => (index === 0 ? 7 : 0.5)}
-                style={{height:"300px"}}
+                label={({ dataEntry }) => dataEntry.title + ": " + dataEntry.value}
+                // segmentsShift={(index) => (index === 0 ? 7 : 0.5)}
+                style={{ height: "300px" }}
                 labelStyle={(index) => ({
-                    fill: hoursLeft[index].color,
+                    fill: salaryProps[index].color,
                     fontSize: "5px",
                     fontFamily: "sans-serif",
                 })}
