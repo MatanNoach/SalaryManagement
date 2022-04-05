@@ -1,6 +1,7 @@
 const overTimeStartMap = { 0: 8, 1: 9, 2: 9, 3: 9, 4: 9, 5: 9, 6: 9 };
 const monthlyHours = 100;
-const overTimePayment = 1.25;
+const overTimePayment25 = 1.25;
+const overTimePayment50 = 1.50;
 const hourlyPayment = 90;
 const drivingExpenses = 22.6;
 const dailyCibus = 25;
@@ -70,7 +71,8 @@ exports.calcDailyPayment = (dataRow) => {
             dataRow["overtime"] =
                 (overTimeH <= 9 ? "0" : "") + overTimeH + ":" + (overTimeM <= 9 ? "0" : "") + overTimeM;
         }
-        payment += (overTimeH + overTimeM / 60) * hourlyPayment * overTimePayment;
+        const totalOvertime = (overTimeH + overTimeM / 60) * hourlyPayment;
+        payment +=  Math.min(totalOvertime,2)* overTimePayment25 + Math.max(totalOvertime-2,0)*overTimePayment50;
         totalH -= overTimeH;
         totalM -= overTimeM;
     } else {
