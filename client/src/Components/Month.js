@@ -9,7 +9,7 @@ import HoursPieChart from "./HoursPieChart";
 import SalaryPieChart from "./SalaryPieChart";
 import LeftButton from "./LeftButton";
 import RightButton from "./RightButton";
-import handler from "../Utils/DataHandler"
+import handler from "../Utils/DataHandler";
 class Month extends React.Component {
     constructor(props) {
         super(props);
@@ -26,13 +26,13 @@ class Month extends React.Component {
     componentDidMount = async () => {
         this.getMonthData();
     };
-    getMonthData = async ()=>{
+    getMonthData = async () => {
         console.log("getting data");
         await axios
             .get("http://localhost:5000/getMonth/" + this.state.month + "-" + this.state.year)
             .then((data) => {
-                console.log("data got")
-                console.log(data.data)
+                console.log("data got");
+                console.log(data.data);
                 this.setState({ data: data.data });
             })
             .catch((err) => {
@@ -40,9 +40,9 @@ class Month extends React.Component {
                 console.error(err);
                 this.openSnackBar(String(err), "error");
             });
-    }
-    componentDidUpdate(prevProps,prevState){
-        if(this.state.month!==prevState.month){
+    };
+    componentDidUpdate(prevProps, prevState) {
+        if (this.state.month !== prevState.month) {
             this.getMonthData();
         }
     }
@@ -112,8 +112,8 @@ class Month extends React.Component {
         return (
             <div>
                 <h1>This is my Salary Web App</h1>
-                <LeftButton onClick={this.moveMonthDown}/>
-                <RightButton onClick={this.moveMonthUp}/>
+                <LeftButton onClick={this.moveMonthDown} />
+                <RightButton onClick={this.moveMonthUp} />
                 <Container>
                     <Grid container justifyContent="center" textAlign={"center"}>
                         <Grid item xs={12}>
@@ -129,9 +129,15 @@ class Month extends React.Component {
                         </Grid>
                         <Grid container spacing={2}>
                             <Grid item xs={6}>
+                                <Typography variant="h4">
+                                    Total: {this.state.data.totalHours? Math.round(this.state.data.totalHours.done*100)/100 : 0}
+                                </Typography>
                                 <HoursPieChart data={handler.handleHoursLeft(this.state.data.totalHours)} />
                             </Grid>
                             <Grid item xs={6}>
+                                <Typography variant="h4">
+                                Total: {this.state.data.salary? Math.round(this.state.data.salary.total*100)/100 : 0}
+                                </Typography>
                                 <SalaryPieChart data={handler.handleSalary(this.state.data.salary)} />
                             </Grid>
                         </Grid>

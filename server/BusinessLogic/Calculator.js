@@ -8,16 +8,16 @@ const dailyCibus = 25;
 const basicCalc = (prop, salary) => {
     return salaryProps[prop].percentage * salary;
 };
-const doublePercentagecalc = (prop,salary) => {
+const doublePercentagecalc = (prop, salary) => {
     const step = 6331; // step by social security website
     const num1 = Math.min(salary, step);
     const num2 = Math.max(salary - step, 0);
     return salaryProps[prop].percentage1 * num1 + salaryProps[prop].percentage2 * num2;
 };
-const netoCalc = (salaryObj,salary) => {
+const netoCalc = (salaryObj, salary) => {
     let neto = salary;
     for (const p in salaryObj) {
-        if(p!=="total"){
+        if (p !== "total") {
             neto -= salaryObj[p];
         }
     }
@@ -26,32 +26,32 @@ const netoCalc = (salaryObj,salary) => {
 
 const salaryProps = {
     pension: {
-        percentage:0.06,
-        calcFunction:basicCalc,
-        isDeduction:false,
+        percentage: 0.06,
+        calcFunction: basicCalc,
+        isDeduction: false,
     },
     socialSecurity: {
-        percentage1:0.004,
-        percentage2:0.07,
-        calcFunction:doublePercentagecalc,
-        isDeduction:true,
+        percentage1: 0.004,
+        percentage2: 0.07,
+        calcFunction: doublePercentagecalc,
+        isDeduction: true,
     },
-    health:{
-        percentage1:0.031,
-        percentage2:0.05,
-        calcFunction:doublePercentagecalc,
-        isDeduction:true,
+    health: {
+        percentage1: 0.031,
+        percentage2: 0.05,
+        calcFunction: doublePercentagecalc,
+        isDeduction: true,
     },
-    educationFund:{
-        percentage:0.025,
-        calcFunction:basicCalc,
-        isDeduction:false,
+    educationFund: {
+        percentage: 0.025,
+        calcFunction: basicCalc,
+        isDeduction: false,
     },
     incomeTax: {
-        percentage:0.033,
-        calcFunction:basicCalc,
-        isDeduction:true,
-    }, // Check it
+        percentage: 0.031,
+        calcFunction: basicCalc,
+        isDeduction: true,
+    }, // estimated
 };
 
 exports.calcDailyPayment = (dataRow) => {
@@ -67,7 +67,8 @@ exports.calcDailyPayment = (dataRow) => {
         if (overTimeM === 0 && overTimeH === 0) {
             dataRow["overtime"] = "-";
         } else {
-            dataRow["overtime"] = overTimeH + ":" + overTimeM;
+            dataRow["overtime"] =
+                (overTimeH <= 9 ? "0" : "") + overTimeH + ":" + (overTimeM <= 9 ? "0" : "") + overTimeM;
         }
         payment += (overTimeH + overTimeM / 60) * hourlyPayment * overTimePayment;
         totalH -= overTimeH;
@@ -108,22 +109,22 @@ exports.timeIntToString = (time) => {
     const minutes = Math.round(left * 60);
     return hours + ":" + (minutes <= 9 ? "0" : "") + minutes;
 };
-exports.calcSalary = (salary,driving,cibus) => {
-    console.log("in calcSalary")
+exports.calcSalary = (salary, driving, cibus) => {
+    console.log("in calcSalary");
     console.log(salary);
     const salaryObj = {};
-    const deductionSalary = salary+cibus;
+    const deductionSalary = salary + cibus;
     salaryObj["total"] = salary;
-    for(const p in salaryProps){
-        if(salaryProps[p].isDeduction){
-            salaryObj[p] = salaryProps[p].calcFunction(p,deductionSalary)
-        }else{
-            salaryObj[p] = salaryProps[p].calcFunction(p,salary-driving)
+    for (const p in salaryProps) {
+        if (salaryProps[p].isDeduction) {
+            salaryObj[p] = salaryProps[p].calcFunction(p, deductionSalary);
+        } else {
+            salaryObj[p] = salaryProps[p].calcFunction(p, salary - driving);
         }
-        console.log(p)
-        console.log(salaryObj[p])
+        console.log(p);
+        console.log(salaryObj[p]);
     }
-    salaryObj["neto"] = netoCalc(salaryObj,salary)
+    salaryObj["neto"] = netoCalc(salaryObj, salary);
     return salaryObj;
 };
 
