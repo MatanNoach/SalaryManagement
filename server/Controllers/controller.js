@@ -5,6 +5,8 @@ dotenv.config("../.env");
 const db = require("../db");
 
 const Salary = db.SalaryMonth;
+const drivingExpenses = 22.6;
+const dailyCibus = 25;
 
 exports.addMonth = (req, res) => {
     const dataRow = req.body.dataRow;
@@ -13,7 +15,7 @@ exports.addMonth = (req, res) => {
     const salary = new Salary({
         month: month,
         year: year,
-        salary: calculator.calcSalary(dataRow.payment),
+        salary: calculator.calcSalary(dataRow.payment,drivingExpenses,dailyCibus),
         totalHours: calculator.calcLeftHours(100, dataRow.totalInt),
         times: [dataRow],
     });
@@ -33,12 +35,12 @@ exports.addTime = (req, res) => {
     const date = new Date(req.body.dataRow.date);
     date.setDate(date.getDate() + 7);
     if (date.getMonth() !== month) {
-        return res.status(500).send({message:"Invalid date in current month salary"});
+        return res.status(500).send({ message: "Invalid date in current month salary" });
     }
     req.body.dataRow = calculator.calcDailyPayment(req.body.dataRow);
-    console.log("before salary calc")
-    const salaryProps = calculator.calcSalary(req.body.dataRow.payment);
-    console.log("after salary calc")
+    // console.log("before salary calc")
+    // console.log("after salary calc")
+    // console.log(salaryProps)
     Salary.findOneAndUpdate(
         { year: year, month: month },
         {
@@ -46,16 +48,18 @@ exports.addTime = (req, res) => {
                 times: req.body.dataRow,
             },
             $inc: {
-                    "salary.total": req.body.dataRow.payment,
-                    "salary.neto": salaryProps.neto,
-                    "salary.pension": salaryProps.pension,
-                    "salary.socialSecurity": salaryProps.socialSecurity,
-                    "salary.health": salaryProps.health,
-                    "salary.educationFund": salaryProps.educationFund,
-                    "salary.incomeTax": salaryProps.incomeTax,
-                    "totalHours.left": req.body.dataRow.totalInt * -1,
-                    "totalHours.done": req.body.dataRow.totalInt,
-                },
+                "salary.total": req.body.dataRow.payment,
+                "salary.drivingExpenses":drivingExpenses,
+                "salary.cibus":dailyCibus,
+                // "salary.neto": salaryProps.neto,
+                // "salary.pension": salaryProps.pension,
+                // "salary.socialSecurity": salaryProps.socialSecurity,
+                // "salary.health": salaryProps.health,
+                // "salary.educationFund": salaryProps.educationFund,
+                // "salary.incomeTax": salaryProps.incomeTax,
+                "totalHours.left": req.body.dataRow.totalInt * -1,
+                "totalHours.done": req.body.dataRow.totalInt,
+            },
         },
         {
             new: true,
@@ -65,8 +69,30 @@ exports.addTime = (req, res) => {
             if (!data) {
                 console.log("adding month");
                 return this.addMonth(req, res);
+            } else {
+                const salaryProps = calculator.calcSalary(data.salary.total,data.salary.drivingExpenses,data.salary.cibus);
+                Salary.findOneAndUpdate(
+                    { year: year, month: month },
+                    {
+                        $set: {
+                            "salary.neto": salaryProps.neto,
+                            "salary.pension": salaryProps.pension,
+                            "salary.socialSecurity": salaryProps.socialSecurity,
+                            "salary.health": salaryProps.health,
+                            "salary.educationFund": salaryProps.educationFund,
+                            "salary.incomeTax": salaryProps.incomeTax,
+                        },
+                    }
+                )
+                    .then((data) => {
+                        console.log("after set salary")
+                        return res.send(data);
+                    })
+                    .catch((e) => {
+                        console.log(err);
+                        return res.status(500).send({ message: "There was a problem finding the monthly salary" });
+                    });
             }
-            return res.send(data);
         })
         .catch((err) => {
             console.log(err);

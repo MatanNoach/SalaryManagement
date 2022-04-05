@@ -1,0 +1,133 @@
+{
+    "_id": { "$oid": "624c291b86ec34d60097e8c4" },
+    "month": 2,
+    "year": 2022,
+    "salary": {
+        "total": 7994.625,
+        "neto": 6283.77525,
+        "pension": 479.67749999999995,
+        "socialSecurity": 519.650625,
+        "health": 247.83337499999996,
+        "educationFund": 199.86562500000002,
+        "incomeTax": 263.822625,
+        "_id": { "$oid": "624c291b86ec34d60097e8c5" }
+    },
+    "totalHours": {
+        "left": 12.116666666666672,
+        "done": 87.88333333333334,
+        "_id": { "$oid": "624c291b86ec34d60097e8c6" }
+    },
+    "times": [
+        {
+            "date": "2022-02-24",
+            "startTime": "08:30",
+            "endTime": "16:00",
+            "totalInt": 7.5,
+            "totalString": "07:30",
+            "overtime": "-",
+            "payment": 675,
+            "_id": { "$oid": "624c291b86ec34d60097e8c7" }
+        },
+        {
+            "date": "2022-02-27",
+            "startTime": "08:30",
+            "endTime": "17:30",
+            "totalInt": 9,
+            "totalString": "09:00",
+            "overtime": "1:0",
+            "payment": 832.5,
+            "_id": { "$oid": "624c292b86ec34d60097e8c9" }
+        },
+        {
+            "date": "2022-02-28",
+            "startTime": "08:30",
+            "endTime": "17:20",
+            "totalInt": 8.833333333333334,
+            "totalString": "08:50",
+            "overtime": "-",
+            "payment": 795,
+            "_id": { "$oid": "624c293a86ec34d60097e8cd" }
+        },
+        {
+            "date": "2022-03-01",
+            "startTime": "08:30",
+            "endTime": "16:30",
+            "totalInt": 8,
+            "totalString": "08:00",
+            "overtime": "-",
+            "payment": 720,
+            "_id": { "$oid": "624c294786ec34d60097e8d1" }
+        },
+        {
+            "date": "2022-03-06",
+            "startTime": "08:30",
+            "endTime": "18:15",
+            "totalInt": 9.75,
+            "totalString": "09:45",
+            "overtime": "1:45",
+            "payment": 916.875,
+            "_id": { "$oid": "624c295486ec34d60097e8d5" }
+        },
+        {
+            "date": "2022-03-07",
+            "startTime": "09:05",
+            "endTime": "16:53",
+            "totalInt": 7.8,
+            "totalString": "07:48",
+            "overtime": "-",
+            "payment": 702,
+            "_id": { "$oid": "624c296e86ec34d60097e8d9" }
+        },
+        {
+            "date": "2022-03-08",
+            "startTime": "08:10",
+            "endTime": "11:30",
+            "totalInt": 3.3333333333333335,
+            "totalString": "03:20",
+            "overtime": "-",
+            "payment": 300,
+            "_id": { "$oid": "624c2bee86ec34d60097e8dd" }
+        },
+        {
+            "date": "2022-03-13",
+            "startTime": "08:30",
+            "endTime": "16:30",
+            "totalInt": 8,
+            "totalString": "08:00",
+            "overtime": "-",
+            "payment": 720,
+            "_id": { "$oid": "624c2c1686ec34d60097e8e1" }
+        },
+        {
+            "date": "2022-03-14",
+            "startTime": "09:10",
+            "endTime": "17:09",
+            "totalInt": 7.983333333333333,
+            "totalString": "07:59",
+            "overtime": "-",
+            "payment": 718.5,
+            "_id": { "$oid": "624c2c2586ec34d60097e8e5" }
+        },
+        {
+            "date": "2022-03-20",
+            "startTime": "08:30",
+            "endTime": "17:32",
+            "totalInt": 9.033333333333333,
+            "totalString": "09:02",
+            "overtime": "1:2",
+            "payment": 836.25,
+            "_id": { "$oid": "624c2c3686ec34d60097e8e9" }
+        },
+        {
+            "date": "2022-03-21",
+            "startTime": "09:36",
+            "endTime": "18:15",
+            "totalInt": 8.65,
+            "totalString": "08:39",
+            "overtime": "-",
+            "payment": 778.5,
+            "_id": { "$oid": "624c2c7086ec34d60097e8ed" }
+        }
+    ],
+    "__v": 0
+}

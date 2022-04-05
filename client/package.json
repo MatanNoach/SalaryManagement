@@ -13,9 +13,11 @@
     "axios": "^0.26.1",
     "fs": "0.0.1-security",
     "react": "^18.0.0",
+    "react-animate-props": "^0.2.4",
     "react-dom": "^18.0.0",
     "react-minimal-pie-chart": "^8.2.0",
     "react-scripts": "5.0.0",
+    "tweenkle": "^0.2.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

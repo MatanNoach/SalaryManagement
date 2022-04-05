@@ -27,14 +27,9 @@ const basicSalaryProps = [
         color: "#0981fb",
     },
     {
-        title: "מס הכנסה",
+        title: "קרן פנסיה",
         value: 1,
-        color: "#80bdfa",
-    },
-    {
-        title: "ביטוח בריאות",
-        value: 1,
-        color: "#3d59a0",
+        color: "#ad8fc6",
     },
     {
         title: "ביטוח לאומי",
@@ -42,14 +37,19 @@ const basicSalaryProps = [
         color: "#546c86",
     },
     {
-        title: "קרן פנסיה",
+        title: "ביטוח בריאות",
         value: 1,
-        color: "#ad8fc6",
+        color: "#3d59a0",
     },
     {
         title: "קרן השתלמות",
         value: 1,
         color: "#3e4c63",
+    },
+    {
+        title: "מס הכנסה",
+        value: 1,
+        color: "#80bdfa",
     },
 ];
 

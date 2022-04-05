@@ -16,6 +16,8 @@ module.exports = (mongoose)=>{
         health:Number,
         educationFund:Number,
         incomeTax:Number,
+        cibus:Number,
+        drivingExpenses:Number,
     })
     let totalHours=mongoose.Schema({
         left:Number,

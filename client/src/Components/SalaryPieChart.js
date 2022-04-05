@@ -9,7 +9,7 @@ class SalaryPieChart extends React.Component {
                 lineWidth={30}
                 paddingAngle={5}
                 label={({ dataEntry }) => dataEntry.title + ": " + dataEntry.value}
-                // segmentsShift={(index) => (index === 0 ? 7 : 0.5)}
+                // segmentsShift={(index) => (index === this.state.hoverIndex ? 7 : 0.5)}
                 style={{ height: "300px" }}
                 labelStyle={(index) => ({
                     fill: this.props.data[index].color,
@@ -19,6 +19,7 @@ class SalaryPieChart extends React.Component {
                 labelPosition={112}
                 radius={42}
                 animate={true}
+                
             />
         );
     }
