@@ -9,6 +9,7 @@ import HoursPieChart from "./HoursPieChart";
 import SalaryPieChart from "./SalaryPieChart";
 import LeftButton from "./LeftButton";
 import RightButton from "./RightButton";
+import handler from "../Utils/DataHandler"
 class Month extends React.Component {
     constructor(props) {
         super(props);
@@ -51,8 +52,6 @@ class Month extends React.Component {
         });
     };
     dataUpdate = (data) => {
-        console.log("in data update");
-        console.log(data);
         this.setState({
             data: data,
         });
@@ -130,10 +129,10 @@ class Month extends React.Component {
                         </Grid>
                         <Grid container spacing={2}>
                             <Grid item xs={6}>
-                                <HoursPieChart data={this.state.data.totalHours} />
+                                <HoursPieChart data={handler.handleHoursLeft(this.state.data.totalHours)} />
                             </Grid>
                             <Grid item xs={6}>
-                                <SalaryPieChart data={this.state.data.salary} />
+                                <SalaryPieChart data={handler.handleSalary(this.state.data.salary)} />
                             </Grid>
                         </Grid>
                     </Grid>
