@@ -16,7 +16,7 @@ class HoursPieChart extends React.Component {
                     fontFamily: "sans-serif",
                 })}
                 animate={true}
-                labelPosition={5}
+                labelPosition={20}
                 radius={42}
             />
         );

@@ -1,4 +1,5 @@
-const calculator = require("../BusinessLogic/Calculator");
+const salaryCalculator = require("../BusinessLogic/SalaryCalculator");
+const timeCalculator = require("../BusinessLogic/TimeCalculator")
 const dotenv = require("dotenv");
 dotenv.config("../.env");
 
@@ -15,8 +16,8 @@ exports.addMonth = (req, res) => {
     const salary = new Salary({
         month: month,
         year: year,
-        salary: calculator.calcSalary(dataRow.payment,drivingExpenses,dailyCibus),
-        totalHours: calculator.calcLeftHours(100, dataRow.totalInt),
+        salary: salaryCalculator.calcSalary(dataRow.payment, drivingExpenses, dailyCibus),
+        totalHours: timeCalculator.calcLeftHours(100, dataRow.totalInt),
         times: [dataRow],
     });
     salary
@@ -37,10 +38,7 @@ exports.addTime = (req, res) => {
     if (date.getMonth() !== month) {
         return res.status(500).send({ message: "Invalid date in current month salary" });
     }
-    req.body.dataRow = calculator.calcDailyPayment(req.body.dataRow);
-    // console.log("before salary calc")
-    // console.log("after salary calc")
-    // console.log(salaryProps)
+    req.body.dataRow = salaryCalculator.calcDailyPayment(req.body.dataRow);
     Salary.findOneAndUpdate(
         { year: year, month: month },
         {
@@ -49,14 +47,8 @@ exports.addTime = (req, res) => {
             },
             $inc: {
                 "salary.total": req.body.dataRow.payment,
-                "salary.drivingExpenses":drivingExpenses,
-                "salary.cibus":dailyCibus,
-                // "salary.neto": salaryProps.neto,
-                // "salary.pension": salaryProps.pension,
-                // "salary.socialSecurity": salaryProps.socialSecurity,
-                // "salary.health": salaryProps.health,
-                // "salary.educationFund": salaryProps.educationFund,
-                // "salary.incomeTax": salaryProps.incomeTax,
+                "salary.drivingExpenses": drivingExpenses,
+                "salary.cibus": dailyCibus,
                 "totalHours.left": req.body.dataRow.totalInt * -1,
                 "totalHours.done": req.body.dataRow.totalInt,
             },
@@ -70,28 +62,7 @@ exports.addTime = (req, res) => {
                 console.log("adding month");
                 return this.addMonth(req, res);
             } else {
-                const salaryProps = calculator.calcSalary(data.salary.total,data.salary.drivingExpenses,data.salary.cibus);
-                Salary.findOneAndUpdate(
-                    { year: year, month: month },
-                    {
-                        $set: {
-                            "salary.neto": salaryProps.neto,
-                            "salary.pension": salaryProps.pension,
-                            "salary.socialSecurity": salaryProps.socialSecurity,
-                            "salary.health": salaryProps.health,
-                            "salary.educationFund": salaryProps.educationFund,
-                            "salary.incomeTax": salaryProps.incomeTax,
-                        },
-                    }
-                )
-                    .then((data) => {
-                        console.log("after set salary")
-                        return res.send(data);
-                    })
-                    .catch((e) => {
-                        console.log(err);
-                        return res.status(500).send({ message: "There was a problem finding the monthly salary" });
-                    });
+                return updateMonthSalary(req,res,data,year,month);
             }
         })
         .catch((err) => {
@@ -109,5 +80,28 @@ exports.getMonth = (req, res) => {
         })
         .catch(() => {
             return res.send({});
+        });
+};
+const updateMonthSalary = (req, res, data,year,month) => {
+    const salaryProps = salaryCalculator.calcSalary(data.salary.total, data.salary.drivingExpenses, data.salary.cibus);
+    Salary.findOneAndUpdate(
+        { year: year, month: month },
+        {
+            $set: {
+                "salary.neto": salaryProps.neto,
+                "salary.pension": salaryProps.pension,
+                "salary.socialSecurity": salaryProps.socialSecurity,
+                "salary.health": salaryProps.health,
+                "salary.educationFund": salaryProps.educationFund,
+                "salary.incomeTax": salaryProps.incomeTax,
+            },
+        }
+    )
+        .then((data) => {
+            return res.send(data);
+        })
+        .catch((e) => {
+            console.log(err);
+            return res.status(500).send({ message: "There was a problem finding the monthly salary" });
         });
 };
