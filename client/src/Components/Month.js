@@ -111,18 +111,26 @@ class Month extends React.Component {
     render() {
         return (
             <div>
-                <h1>This is my Salary Web App</h1>
-                <LeftButton onClick={this.moveMonthDown} />
-                <RightButton onClick={this.moveMonthUp} />
+                <Typography variant="h2">
+                    Salary Web App
+                </Typography>
                 <Container>
                     <Grid container justifyContent="center" textAlign={"center"}>
-                        <Grid item xs={12}>
-                            <Typography variant="h3">
-                                {this.state.month > 8
-                                    ? Number(this.state.month + 1)
-                                    : "0" + Number(this.state.month + 1)}{" "}
-                                - {this.state.year}
-                            </Typography>
+                        <Grid container>
+                            <Grid item xs={1}>
+                                <LeftButton onClick={this.moveMonthDown} />
+                            </Grid>
+                            <Grid item xs={10}>
+                                <Typography variant="h3">
+                                    {this.state.month > 8
+                                        ? Number(this.state.month + 1)
+                                        : "0" + Number(this.state.month + 1)}{" "}
+                                    - {this.state.year}
+                                </Typography>
+                            </Grid>
+                            <Grid item xs={1}>
+                                <RightButton onClick={this.moveMonthUp} />
+                            </Grid>
                         </Grid>
                         <Grid item xs={12} sx={{ paddingBottom: 10 }}>
                             <TimeTable month={this.state.month} year={this.state.year} data={this.state.data.times} />
@@ -130,13 +138,17 @@ class Month extends React.Component {
                         <Grid container spacing={2}>
                             <Grid item xs={6}>
                                 <Typography variant="h4">
-                                    Total: {this.state.data.totalHours? Math.round(this.state.data.totalHours.done*100)/100 : 0}
+                                    Total:{" "}
+                                    {this.state.data.totalHours
+                                        ? Math.round(this.state.data.totalHours.done * 100) / 100
+                                        : 0}
                                 </Typography>
                                 <HoursPieChart data={handler.handleHoursLeft(this.state.data.totalHours)} />
                             </Grid>
                             <Grid item xs={6}>
                                 <Typography variant="h4">
-                                Total: {this.state.data.salary? Math.round(this.state.data.salary.total*100)/100 : 0}
+                                    Total:{" "}
+                                    {this.state.data.salary ? Math.round(this.state.data.salary.total * 100) / 100 : 0}
                                 </Typography>
                                 <SalaryPieChart data={handler.handleSalary(this.state.data.salary)} />
                             </Grid>
