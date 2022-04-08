@@ -1,9 +1,11 @@
-const timeCalculator = require("./TimeCalculator")
+const timeCalculator = require("./TimeCalculator");
 
 const overTimePayment25 = 1.25;
-const overTimePayment50 = 1.50;
+const overTimePayment50 = 1.5;
 const hourlyPayment = 90;
+
 const drivingExpenses = 22.6;
+const dailyCibus = 25;
 
 const basicCalc = (prop, salary) => {
     return salaryProps[prop].percentage * salary;
@@ -57,28 +59,26 @@ const salaryProps = {
 exports.calcDailyPayment = (dataRow) => {
     const total = timeCalculator.totalDailyHours(dataRow);
     dataRow["totalString"] = total;
-    var [totalH, totalM] = timeCalculator.extractTimeFromString(total)
+    var [totalH, totalM] = timeCalculator.extractTimeFromString(total);
     var payment = 0;
-    var [overTimePayment,totalH,totalM] = calcOverTimePayment(dataRow,totalH,totalM);
-    payment+=overTimePayment;
+    var [overTimePayment, totalH, totalM] = calcOverTimePayment(dataRow, totalH, totalM);
+    payment += overTimePayment;
     payment += (totalH + totalM / 60) * hourlyPayment;
     dataRow["payment"] = payment + drivingExpenses;
     return dataRow;
 };
-const calcOverTimePayment = (dataRow,totalH,totalM)=>{
-    const [totalOvertime,overTimeH,overTimeM] = timeCalculator.calcOverTime(totalH,totalM,dataRow)
-    var payment=0;
-    if(totalOvertime!==0){
-        payment +=  Math.min(totalOvertime,2)* overTimePayment25 + Math.max(totalOvertime-2,0)*overTimePayment50;
+const calcOverTimePayment = (dataRow, totalH, totalM) => {
+    const [totalOvertime, overTimeH, overTimeM] = timeCalculator.calcOverTime(totalH, totalM, dataRow);
+    var payment = 0;
+    if (totalOvertime !== 0) {
+        payment += Math.min(totalOvertime, 2) * overTimePayment25*hourlyPayment + Math.max(totalOvertime - 2, 0) * overTimePayment50*hourlyPayment;
         totalH -= overTimeH;
         totalM -= overTimeM;
     }
-    return [payment,totalH,totalM];
-}
+    return [payment, totalH, totalM];
+};
 
 exports.calcSalary = (salary, driving, cibus) => {
-    console.log("in calcSalary");
-    console.log(salary);
     const salaryObj = {};
     const deductionSalary = salary + cibus;
     salaryObj["total"] = salary;
@@ -92,4 +92,18 @@ exports.calcSalary = (salary, driving, cibus) => {
     salaryObj["neto"] = netoCalc(salaryObj, salary);
     return salaryObj;
 };
-
+exports.calcFullSalary = (times) => {
+    let salaryObj = {
+        total:0,
+        neto:0,
+        pension:0,
+        socialSecurity:0,
+        health:0,
+        educationFund:0,
+        incomeTax:0
+    }
+    times.map((time) => {
+        salaryObj = this.calcSalary(time.payment,drivingExpenses,dailyCibus);
+    });
+    return salaryObj.total===0? null:salaryObj;
+};

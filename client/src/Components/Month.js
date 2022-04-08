@@ -108,6 +108,22 @@ class Month extends React.Component {
             });
         }
     };
+    deleteRow = (dataRow)=> async (event)=>{
+        console.log("in delete row")
+        console.log(event)
+        console.log(dataRow._id)
+        await axios.delete("http://localhost:5000/removeTime/"+this.state.month + "-" + this.state.year+"/"+dataRow._id)
+        .then((data) => {
+            console.log("row deleted");
+            console.log(data.data)
+            this.setState({ data: data.data });
+        })
+        .catch((err) => {
+            console.log("There was a problem deleting the row");
+            console.error(err);
+            this.openSnackBar(String(err), "error");
+        });
+    }
     render() {
         return (
             <div>
@@ -133,7 +149,7 @@ class Month extends React.Component {
                             </Grid>
                         </Grid>
                         <Grid item xs={12} sx={{ paddingBottom: 10 }}>
-                            <TimeTable month={this.state.month} year={this.state.year} data={this.state.data.times} />
+                            <TimeTable month={this.state.month} year={this.state.year} data={this.state.data.times} deleteRow={this.deleteRow} />
                         </Grid>
                         <Grid container spacing={2}>
                             <Grid item xs={6}>

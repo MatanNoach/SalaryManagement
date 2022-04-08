@@ -63,3 +63,13 @@ exports.calcLeftHours = (leftBefore, counted) => {
         done: monthlyHours - leftBefore + counted,
     };
 };
+exports.calcFullTime = (times)=>{
+    let totalHours = {
+        left:monthlyHours,
+        done:0
+    }
+    times.map(time=>{
+        totalHours = this.calcLeftHours(totalHours.left,time.totalInt)
+    })
+    return totalHours.left===monthlyHours? null:totalHours;
+}

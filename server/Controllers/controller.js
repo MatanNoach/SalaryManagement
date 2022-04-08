@@ -1,5 +1,5 @@
 const salaryCalculator = require("../BusinessLogic/SalaryCalculator");
-const timeCalculator = require("../BusinessLogic/TimeCalculator")
+const timeCalculator = require("../BusinessLogic/TimeCalculator");
 const dotenv = require("dotenv");
 dotenv.config("../.env");
 
@@ -62,7 +62,8 @@ exports.addTime = (req, res) => {
                 console.log("adding month");
                 return this.addMonth(req, res);
             } else {
-                return updateMonthSalary(req,res,data,year,month);
+                const salaryProps = salaryCalculator.calcSalary(data.salary.total, data.salary.drivingExpenses, data.salary.cibus);
+                return updateMonth(req, res,{salary:salaryProps},year,month);
             }
         })
         .catch((err) => {
@@ -71,9 +72,9 @@ exports.addTime = (req, res) => {
         });
 };
 exports.getMonth = (req, res) => {
-    const id = req.params.id;
-    const year = Number(id.split("-")[1]);
-    const month = Number(id.split("-")[0]);
+    const date = req.params.date;
+    const year = Number(date.split("-")[1]);
+    const month = Number(date.split("-")[0]);
     Salary.findOne({ year: year, month: month })
         .then((data) => {
             return res.send(data);
@@ -82,26 +83,55 @@ exports.getMonth = (req, res) => {
             return res.send({});
         });
 };
-const updateMonthSalary = (req, res, data,year,month) => {
-    const salaryProps = salaryCalculator.calcSalary(data.salary.total, data.salary.drivingExpenses, data.salary.cibus);
+exports.removeTime = (req, res) => {
+    console.log("in remove time")
+    const date = req.params.date;
+    const year = Number(date.split("-")[1]);
+    const month = Number(date.split("-")[0]);
+    const id = req.params.id;
     Salary.findOneAndUpdate(
         { year: year, month: month },
         {
-            $set: {
-                "salary.neto": salaryProps.neto,
-                "salary.pension": salaryProps.pension,
-                "salary.socialSecurity": salaryProps.socialSecurity,
-                "salary.health": salaryProps.health,
-                "salary.educationFund": salaryProps.educationFund,
-                "salary.incomeTax": salaryProps.incomeTax,
+            $pull: {
+                times: {
+                    _id: id,
+                },
             },
+        },
+        {
+            new: true,
         }
     )
         .then((data) => {
+            salaryObj = salaryCalculator.calcFullSalary(data.times);
+            totalHours = timeCalculator.calcFullTime(data.times);
+            return updateMonth(req, res, {salary:salaryObj,totalHours:totalHours}, year, month);
+        })
+        .catch((e) => {
+            console.log(e);
+            return res.status(500).send({ message: "There was a deleting the row" });
+        });
+};
+const updateMonth = (req, res, props,year,month) => {
+    Salary.findOneAndUpdate(
+        { year: year, month: month },
+        {
+            $set: props,
+        },
+        {
+            new:true
+        }
+    )
+        .then((data) => {
+            if(data.totalHours===null){
+                Salary.deleteOne({_id:data._id}).then((retData)=>{
+                    return res.send({})
+                })
+            }
             return res.send(data);
         })
         .catch((e) => {
-            console.log(err);
+            console.log(e);
             return res.status(500).send({ message: "There was a problem finding the monthly salary" });
         });
 };

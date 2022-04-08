@@ -8,8 +8,10 @@ import {
     TableRow,
     TableSortLabel,
     Box,
+    IconButton,
 } from "@mui/material";
 import { visuallyHidden } from "@mui/utils";
+import DeleteIcon from '@mui/icons-material/Delete';
 import React from "react";
 
 const headCells = [
@@ -78,16 +80,16 @@ class TimeTable extends React.Component {
         this.setOrder(isAsc, property);
     };
     render() {
-        console.log(this.state)
         return (
             <TableContainer component={Paper}>
                 <Table>
                     <TableHead>
-                        <TableRow>
+                        <TableRow style={{backgroundColor:"#1976d2"}}>
                             {headCells.map((head) => {
                                 console.log(head.key)
                                 return (
                                     <TableCell
+                                    style={{color:"white"}}
                                         key={head.key}
                                         sortDirection={this.state.orderBy === head.key ? this.state.order : false}
                                     >
@@ -108,6 +110,9 @@ class TimeTable extends React.Component {
                                     </TableCell>
                                 );
                             })}
+                            <TableCell style={{color:"white"}}>
+                            Delete
+                            </TableCell>
                         </TableRow>
                     </TableHead>
                     <TableBody>
@@ -118,6 +123,11 @@ class TimeTable extends React.Component {
                                         {headCells.map((head) => {
                                             return <TableCell>{day[head.key]}</TableCell>;
                                         })}
+                                        <TableCell>
+                                            <IconButton onClick={this.props.deleteRow(this.props.data[i])}>
+                                                <DeleteIcon/>
+                                            </IconButton>
+                                        </TableCell>
                                     </TableRow>
                                 );
                             })
