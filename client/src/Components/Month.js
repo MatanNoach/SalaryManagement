@@ -109,14 +109,10 @@ class Month extends React.Component {
         }
     };
     deleteRow = (dataRow)=> async (event)=>{
-        console.log("in delete row")
-        console.log(event)
-        console.log(dataRow._id)
         await axios.delete("http://localhost:5000/removeTime/"+this.state.month + "-" + this.state.year+"/"+dataRow._id)
         .then((data) => {
-            console.log("row deleted");
-            console.log(data.data)
             this.setState({ data: data.data });
+            this.openSnackBar("Row deleted successfully", "success");
         })
         .catch((err) => {
             console.log("There was a problem deleting the row");

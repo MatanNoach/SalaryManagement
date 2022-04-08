@@ -26,7 +26,7 @@ exports.addMonth = (req, res) => {
             return res.send(data);
         })
         .catch((err) => {
-            return res.status(500).send({ message: "Some error occured while creating a monthly salary." });
+            return res.status(500).send({ message: "There was a problem creating a monthly salary." });
         });
 };
 
@@ -68,7 +68,7 @@ exports.addTime = (req, res) => {
         })
         .catch((err) => {
             console.log(err);
-            return res.status(500).send({ message: "There was a problem finding the monthly salary" });
+            return res.status(500).send({ message: "There was a problem adding a row to the salary" });
         });
 };
 exports.getMonth = (req, res) => {
@@ -84,7 +84,6 @@ exports.getMonth = (req, res) => {
         });
 };
 exports.removeTime = (req, res) => {
-    console.log("in remove time")
     const date = req.params.date;
     const year = Number(date.split("-")[1]);
     const month = Number(date.split("-")[0]);
@@ -109,7 +108,7 @@ exports.removeTime = (req, res) => {
         })
         .catch((e) => {
             console.log(e);
-            return res.status(500).send({ message: "There was a deleting the row" });
+            return res.status(500).send({ message: "There was a problem deleting the row" });
         });
 };
 const updateMonth = (req, res, props,year,month) => {
@@ -127,8 +126,9 @@ const updateMonth = (req, res, props,year,month) => {
                 Salary.deleteOne({_id:data._id}).then((retData)=>{
                     return res.send({})
                 })
+            }else{
+                return res.send(data);
             }
-            return res.send(data);
         })
         .catch((e) => {
             console.log(e);
