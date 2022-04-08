@@ -6,8 +6,9 @@ dotenv.config("../.env");
 const db = require("../db");
 
 const Salary = db.SalaryMonth;
-const drivingExpenses = 22.6;
-const dailyCibus = 25;
+const constClass = require("../BusinessLogic/Constants")
+// const constClass.drivingExpenses = 22.6;
+// const constClass.dailyCibus = 25;
 
 exports.addMonth = (req, res) => {
     const dataRow = req.body.dataRow;
@@ -16,7 +17,7 @@ exports.addMonth = (req, res) => {
     const salary = new Salary({
         month: month,
         year: year,
-        salary: salaryCalculator.calcSalary(dataRow.payment, drivingExpenses, dailyCibus),
+        salary: salaryCalculator.calcSalary(dataRow.payment, constClass.drivingExpenses, constClass.dailyCibus),
         totalHours: timeCalculator.calcLeftHours(100, dataRow.totalInt),
         times: [dataRow],
     });
@@ -47,8 +48,8 @@ exports.addTime = (req, res) => {
             },
             $inc: {
                 "salary.total": req.body.dataRow.payment,
-                "salary.drivingExpenses": drivingExpenses,
-                "salary.cibus": dailyCibus,
+                "salary.drivingExpenses": constClass.drivingExpenses,
+                "salary.cibus": constClass.dailyCibus,
                 "totalHours.left": req.body.dataRow.totalInt * -1,
                 "totalHours.done": req.body.dataRow.totalInt,
             },

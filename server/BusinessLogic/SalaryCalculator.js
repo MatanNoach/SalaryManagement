@@ -1,15 +1,10 @@
+const constClass = require("./Constants")
 const timeCalculator = require("./TimeCalculator");
-
-const overTimePayment25 = 1.25;
-const overTimePayment50 = 1.5;
-const hourlyPayment = 90;
-
-const drivingExpenses = 22.6;
-const dailyCibus = 25;
 
 const basicCalc = (prop, salary) => {
     return salaryProps[prop].percentage * salary;
 };
+
 const doublePercentageCalc = (prop, salary) => {
     const step = 6331; // step by social security website
     const num1 = Math.min(salary, step);
@@ -63,30 +58,32 @@ exports.calcDailyPayment = (dataRow) => {
     var payment = 0;
     var [overTimePayment, totalH, totalM] = calcOverTimePayment(dataRow, totalH, totalM);
     payment += overTimePayment;
-    payment += (totalH + totalM / 60) * hourlyPayment;
-    dataRow["payment"] = payment + drivingExpenses;
+    payment += (totalH + totalM / 60) * constClass.hourlyPayment;
+    dataRow["payment"] = payment + constClass.drivingExpenses;
     return dataRow;
 };
 const calcOverTimePayment = (dataRow, totalH, totalM) => {
     const [totalOvertime, overTimeH, overTimeM] = timeCalculator.calcOverTime(totalH, totalM, dataRow);
     var payment = 0;
     if (totalOvertime !== 0) {
-        payment += Math.min(totalOvertime, 2) * overTimePayment25*hourlyPayment + Math.max(totalOvertime - 2, 0) * overTimePayment50*hourlyPayment;
+        payment +=
+            Math.min(totalOvertime, 2) * constClass.overTimePayment25 * constClass.hourlyPayment +
+            Math.max(totalOvertime - 2, 0) * constClass.overTimePayment50 * constClass.hourlyPayment;
         totalH -= overTimeH;
         totalM -= overTimeM;
     }
     return [payment, totalH, totalM];
 };
 
-exports.calcSalary = (salary, driving, cibus) => {
+exports.calcSalary = (salary, monthlyDriving, monthlyCibus) => {
     const salaryObj = {};
-    const deductionSalary = salary + cibus;
+    const deductionSalary = salary + monthlyCibus;
     salaryObj["total"] = salary;
     for (const p in salaryProps) {
         if (salaryProps[p].isDeduction) {
             salaryObj[p] = salaryProps[p].calcFunction(p, deductionSalary);
         } else {
-            salaryObj[p] = salaryProps[p].calcFunction(p, salary - driving);
+            salaryObj[p] = salaryProps[p].calcFunction(p, salary - monthlyDriving);
         }
     }
     salaryObj["neto"] = netoCalc(salaryObj, salary);
@@ -94,16 +91,16 @@ exports.calcSalary = (salary, driving, cibus) => {
 };
 exports.calcFullSalary = (times) => {
     let salaryObj = {
-        total:0,
-        neto:0,
-        pension:0,
-        socialSecurity:0,
-        health:0,
-        educationFund:0,
-        incomeTax:0
-    }
+        total: 0,
+        neto: 0,
+        pension: 0,
+        socialSecurity: 0,
+        health: 0,
+        educationFund: 0,
+        incomeTax: 0,
+    };
     times.map((time) => {
-        salaryObj = this.calcSalary(time.payment,drivingExpenses,dailyCibus);
+        salaryObj = this.calcSalary(time.payment, constClass.drivingExpenses, constClass.dailyCibus);
     });
-    return salaryObj.total===0? null:salaryObj;
+    return salaryObj.total === 0 ? null : salaryObj;
 };

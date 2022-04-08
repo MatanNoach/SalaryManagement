@@ -1,9 +1,8 @@
-const monthlyHours = 100;
-const overTimeStartMap = { 0: 8, 1: 9, 2: 9, 3: 9, 4: 9, 5: 9, 6: 9 };
+const constClass = require("./Constants")
 
 exports.calcOverTime = (totalH, totalM, dataRow) => {
     const date = new Date(dataRow.date);
-    const overTimeStart = overTimeStartMap[date.getDay()];
+    const overTimeStart = constClass.overTimeStartMap[date.getDay()];
     var overTimeH = 0;
     var overTimeM = 0;
     if (totalH >= overTimeStart) {
@@ -45,31 +44,36 @@ exports.calcTotalHours = (prevTime, addTime) => {
     }
     return timeFormat(newH, newM);
 };
+
 exports.timeIntToString = (time) => {
     const hours = Math.floor(time);
     const left = time - hours;
     const minutes = Math.round(left * 60);
     return timeFormat(hours, minutes);
 };
+
 exports.timeFormat = (hours, minutes) => {
     return (hours <= 9 ? "0" : "") + hours + ":" + (minutes <= 9 ? "0" : "") + minutes;
 };
+
 exports.extractTimeFromString = (time) => {
     return time.split(":").map((value) => Number(value));
 };
+
 exports.calcLeftHours = (leftBefore, counted) => {
     return {
         left: leftBefore - counted,
-        done: monthlyHours - leftBefore + counted,
+        done: constClass.monthlyHours - leftBefore + counted,
     };
 };
+
 exports.calcFullTime = (times)=>{
     let totalHours = {
-        left:monthlyHours,
+        left:constClass.monthlyHours,
         done:0
     }
     times.map(time=>{
         totalHours = this.calcLeftHours(totalHours.left,time.totalInt)
     })
-    return totalHours.left===monthlyHours? null:totalHours;
+    return totalHours.left===constClass.monthlyHours? null:totalHours;
 }
