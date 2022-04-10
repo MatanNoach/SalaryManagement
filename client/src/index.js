@@ -6,7 +6,6 @@ import Month from './Components/Month';
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <App /> */}
     <Month/>
   </React.StrictMode>,
   document.getElementById('root')
