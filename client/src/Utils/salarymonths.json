@@ -1,23 +1,6 @@
 [{
-  "_id": {
-    "$oid": "624c86c2796b3dced79dfb55"
-  },
   "month": 2,
   "year": 2022,
-  "salary": {
-    "total": 8243.225000000002,
-    "neto": 6817.4189000000015,
-    "pension": 481.0335000000001,
-    "socialSecurity": 176.67975000000018,
-    "health": 304.3722500000001,
-    "educationFund": 200.43062500000008,
-    "incomeTax": 263.2899750000001,
-    "_id": {
-      "$oid": "624c86c2796b3dced79dfb56"
-    },
-    "cibus": 250,
-    "drivingExpenses": 225.99999999999997
-  },
   "totalHours": {
     "left": 12.116666666666672,
     "done": 87.88333333333334,
@@ -158,28 +141,10 @@
         "$oid": "624c86c7796b3dced79dfb99"
       }
     }
-  ],
-  "__v": 0
+  ]
 },{
-  "_id": {
-    "$oid": "624c8a74796b3dced79dfc00"
-  },
   "month": 1,
   "year": 2022,
-  "salary": {
-    "total": 9625.875000000002,
-    "neto": 7866.347500000003,
-    "pension": 558.5685000000001,
-    "socialSecurity": 280.46525000000014,
-    "health": 378.50475000000006,
-    "educationFund": 232.73687500000005,
-    "incomeTax": 309.25212500000004,
-    "_id": {
-      "$oid": "624c8a74796b3dced79dfc01"
-    },
-    "cibus": 350,
-    "drivingExpenses": 316.40000000000003
-  },
   "totalHours": {
     "left": -2.8333333333333286,
     "done": 102.83333333333334,
@@ -368,31 +333,13 @@
         "$oid": "624c8bc0796b3dced79dfc60"
       }
     }
-  ],
-  "__v": 0
+  ]
 },{
-  "_id": {
-    "$oid": "624c9e06cb20a19ea1af2e1b"
-  },
   "month": 3,
   "year": 2022,
-  "salary": {
-    "total": 4449.1,
-    "neto": 3778.6409000000003,
-    "pension": 260.166,
-    "socialSecurity": 18.296400000000002,
-    "health": 141.7971,
-    "educationFund": 108.40250000000002,
-    "incomeTax": 141.7971,
-    "_id": {
-      "$oid": "624c9e06cb20a19ea1af2e1c"
-    },
-    "cibus": 125,
-    "drivingExpenses": 113
-  },
   "totalHours": {
-    "left": 54.866666666666674,
-    "done": 45.13333333333333,
+    "left": 4.050000000000006,
+    "done": 95.95,
     "_id": {
       "$oid": "624c9e06cb20a19ea1af2e1d"
     }
@@ -469,29 +416,83 @@
       "_id": {
         "$oid": "624c9e6ccb20a19ea1af2e3c"
       }
+    },
+    {
+      "date": "2022-04-10",
+      "startTime": "08:24",
+      "endTime": "18:54",
+      "totalInt": 10.5,
+      "totalString": "10:30",
+      "overtime": "02:30",
+      "payment": 1035.1,
+      "_id": {
+        "$oid": "625303d86e71a4de9f1fb10e"
+      }
+    },
+    {
+      "date": "2022-04-11",
+      "startTime": "08:15",
+      "endTime": "16:15",
+      "totalInt": 8,
+      "totalString": "08:00",
+      "overtime": "-",
+      "payment": 742.6,
+      "_id": {
+        "$oid": "625434a86e71a4de9f1fb119"
+      }
+    },
+    {
+      "date": "2022-04-12",
+      "startTime": "09:04",
+      "endTime": "17:02",
+      "totalInt": 7.966666666666667,
+      "totalString": "07:58",
+      "overtime": "-",
+      "payment": 739.6,
+      "_id": {
+        "$oid": "625ae4cd70b49c437a017bb5"
+      }
+    },
+    {
+      "date": "2022-04-17",
+      "startTime": "08:00",
+      "endTime": "17:22",
+      "totalInt": 9.366666666666667,
+      "totalString": "09:22",
+      "overtime": "01:22",
+      "payment": 896.35,
+      "_id": {
+        "$oid": "625c22c770b49c437a017bbd"
+      }
+    },
+    {
+      "date": "2022-04-19",
+      "startTime": "09:00",
+      "endTime": "18:14",
+      "totalInt": 9.233333333333333,
+      "totalString": "09:14",
+      "overtime": "00:14",
+      "payment": 858.85,
+      "_id": {
+        "$oid": "625fecb127b9fe479aed5f93"
+      }
+    },
+    {
+      "date": "2022-04-20",
+      "startTime": "08:30",
+      "endTime": "14:15",
+      "totalInt": 5.75,
+      "totalString": "05:45",
+      "overtime": "-",
+      "payment": 540.1,
+      "_id": {
+        "$oid": "625fecc627b9fe479aed5f9b"
+      }
     }
-  ],
-  "__v": 0
+  ]
 },{
-  "_id": {
-    "$oid": "624c9ee9cb20a19ea1af2e58"
-  },
   "month": 0,
   "year": 2022,
-  "salary": {
-    "total": 5051.150000000001,
-    "neto": 4290.59435,
-    "pension": 292.221,
-    "socialSecurity": 21.004600000000003,
-    "health": 162.78565,
-    "educationFund": 121.75875000000002,
-    "incomeTax": 162.78565,
-    "_id": {
-      "$oid": "624c9ee9cb20a19ea1af2e59"
-    },
-    "cibus": 200,
-    "drivingExpenses": 180.79999999999998
-  },
   "totalHours": {
     "left": 46.91666666666667,
     "done": 53.083333333333336,
@@ -608,28 +609,10 @@
         "$oid": "624c9fc9cb20a19ea1af2e8e"
       }
     }
-  ],
-  "__v": 0
+  ]
 },{
-  "_id": {
-    "$oid": "624ca0f8cb20a19ea1af2e98"
-  },
   "month": 11,
   "year": 2021,
-  "salary": {
-    "total": 10535.200000000003,
-    "neto": 8557.363800000003,
-    "pension": 610.416,
-    "socialSecurity": 347.6180000000002,
-    "health": 426.4710000000001,
-    "educationFund": 254.34000000000006,
-    "incomeTax": 338.99120000000005,
-    "_id": {
-      "$oid": "624ca0f8cb20a19ea1af2e99"
-    },
-    "cibus": 400,
-    "drivingExpenses": 361.6000000000001
-  },
   "totalHours": {
     "left": -12.45,
     "done": 112.45,
@@ -842,6 +825,65 @@
         "$oid": "624ca23dcb20a19ea1af2f06"
       }
     }
-  ],
-  "__v": 0
+  ]
+},{
+  "month": 4,
+  "year": 2022,
+  "totalHours": {
+    "left": 65.31666666666666,
+    "done": 34.68333333333333,
+    "_id": {
+      "$oid": "62678c83cb03bd735a2610fb"
+    }
+  },
+  "times": [
+    {
+      "date": "2022-04-24",
+      "startTime": "08:30",
+      "endTime": "18:10",
+      "totalInt": 9.666666666666666,
+      "totalString": "09:40",
+      "overtime": "01:40",
+      "payment": 930.1,
+      "_id": {
+        "$oid": "6265aa60cb03bd735a2610de"
+      }
+    },
+    {
+      "date": "2022-04-25",
+      "startTime": "08:52",
+      "endTime": "19:06",
+      "totalInt": 10.233333333333333,
+      "totalString": "10:14",
+      "overtime": "01:14",
+      "payment": 971.35,
+      "_id": {
+        "$oid": "62678c8ecb03bd735a261100"
+      }
+    },
+    {
+      "date": "2022-04-28",
+      "startTime": "12:00",
+      "endTime": "17:00",
+      "totalInt": 5,
+      "totalString": "05:00",
+      "overtime": "-",
+      "payment": 472.6,
+      "_id": {
+        "$oid": "626ea45e81f6d91cc76fc1c2"
+      }
+    },
+    {
+      "date": "2022-05-01",
+      "startTime": "08:00",
+      "endTime": "17:47",
+      "totalInt": 9.783333333333333,
+      "totalString": "09:47",
+      "overtime": "01:47",
+      "payment": 943.225,
+      "_id": {
+        "$oid": "626ea46a81f6d91cc76fc1ca"
+      }
+    }
+  ]
 }]

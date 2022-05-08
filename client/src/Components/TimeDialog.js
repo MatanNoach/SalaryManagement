@@ -118,7 +118,7 @@ class TimeDialog extends React.Component {
             >
                 <DialogTitle>Add Time</DialogTitle>
                 <DialogContent>
-                    <Stack direction="row" spacing={2}>
+                    <Stack direction="row" spacing={2} paddingTop={"10px"}>
                         <TimeTextField
                             type="date"
                             onChange={this.setDate}
